@@ -1,8 +1,10 @@
 package com.articTern.model;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -38,6 +40,9 @@ public class Customer extends User{
 	@NotNull(message = "Mobile Number cannot be null.")
 	@Pattern(regexp = "[6789]{1}[0-9]{9}",message = "Invalid Mobile Number.")
 	private String customerMobile;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "customer")
+	private TicketDetails ticketDetails;
 	
 
 	
