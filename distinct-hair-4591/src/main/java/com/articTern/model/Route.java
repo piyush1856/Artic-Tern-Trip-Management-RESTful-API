@@ -63,6 +63,10 @@ public class Route {
 	@OneToMany(mappedBy = "busRoute", cascade = CascadeType.ALL)
 	private List<Bus> routeBusList = new ArrayList<>();
 	
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketRoute")
+	private List<TicketDetails> routeTicketList = new ArrayList<>();
+	
 	
 
 }
