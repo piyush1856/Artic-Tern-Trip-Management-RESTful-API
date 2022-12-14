@@ -8,7 +8,7 @@
 		<version>2.7.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.masai</groupId>
+	<groupId>com.articTern</groupId>
 	<artifactId>distinct-hair-4591</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>distinct-hair-4591</name>
@@ -53,14 +53,12 @@
 		</dependency>
 		
 		
-		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+				<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
 <dependency>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi-ui</artifactId>
     <version>1.6.13</version>
 </dependency>
-
-
 	</dependencies>
 
 	<build>

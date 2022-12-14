@@ -1,4 +1,4 @@
-package com.masai;
+package com.articTern;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
