@@ -1,15 +1,25 @@
 package com.articTern.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import com.articTern.enums.PackageType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,9 +48,8 @@ public class Package {
 	private String packageDescription;
 	
 	@NotNull(message = "Package Type Can't be null.")
-	@NotBlank(message = "Package Type Can't be Blank.")
-	@NotEmpty (message = "Package Type Can't be Empty.")
-	private String packageType;
+	@Enumerated(EnumType.STRING)
+	private PackageType packageType;
 	
 	@NotNull(message = "Package Cost Can't be null.")
 	private Double packageCost;
@@ -48,7 +57,38 @@ public class Package {
 	
 	@NotNull(message = "Payment Details Can't be null.")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "packageDetails")
+	@JsonIgnore
 	private PaymentDetails payment;
+	
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "packageInTicketDetail")
+	private TicketDetails ticketDetailInPackage;
+	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "packageInBooking", cascade = CascadeType.ALL)
+	private List<Booking> bookingList = new ArrayList<>();
+	
+	
+	@ManyToMany(mappedBy = "packageList", cascade = CascadeType.ALL)
+	private List<Hotel> hotelList = new ArrayList<>();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

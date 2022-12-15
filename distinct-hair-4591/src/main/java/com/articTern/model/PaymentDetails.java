@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,6 +39,7 @@ public class PaymentDetails {
 	private LocalTime paymentTime;
 	
 	@NotNull(message = "Payment Mode  Can't be null.")
+	@Enumerated(EnumType.STRING)
 	private PaymentMode paymentMode;
 	
 	@NotNull(message = "Payment Amount Can't be null.")

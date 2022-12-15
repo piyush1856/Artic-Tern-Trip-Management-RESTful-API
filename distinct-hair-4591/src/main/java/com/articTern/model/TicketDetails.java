@@ -2,6 +2,8 @@ package com.articTern.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.articTern.enums.TicketStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +34,8 @@ public class TicketDetails {
 	private Integer ticketId;
 	
 	@NotNull(message = "Ticket Status Can't be null.")
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private TicketStatus status;
 	
 	@NotNull(message = "Number of person can not be null")
 	@Min(value = 1, message = "Minimum number of person should be 1")
@@ -38,7 +44,13 @@ public class TicketDetails {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Route ticketRoute;
 	
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
+	
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Package packageInTicketDetail;
+	
 
 }

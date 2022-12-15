@@ -3,10 +3,12 @@ package com.articTern.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -41,6 +43,31 @@ public class Feedback {
 	private Integer rating;
 	
 	private LocalDate submitDate;
+	
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Customer customer;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
