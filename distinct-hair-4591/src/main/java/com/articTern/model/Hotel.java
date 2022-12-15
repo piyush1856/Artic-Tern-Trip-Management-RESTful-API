@@ -55,7 +55,7 @@ public class Hotel {
 	@NotNull(message = "Hotel Address is mandatory field.")
 	private List<Address> hotelAdresses = new ArrayList<>();
 	
-	@Min(value = 500, message = "Rent should be greater than 500")
+	@Min(value = 300, message = "Rent should be greater than 300")
 	private Double rent;
 	
 	private HotelStatus hotelStatus;

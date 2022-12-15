@@ -17,5 +17,10 @@ public class Address {
 	private String pincode;
 	private String state;
 	private CountryEnum country;
+	
+	
+	
+	
+	
 
 }

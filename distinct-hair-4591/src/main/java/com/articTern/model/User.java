@@ -37,6 +37,7 @@ public abstract class User {
 	@NotBlank(message = "User type Can't be Blank.")
 	@NotEmpty (message = "User type Can't be Empty.")
 	private com.articTern.enums.UserType userType;
+	
 	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$",message = "Password must contain 8 characters and should have atleast 1 Upper Case, 1 Small Case, 1 Number and 1 Special Character")
 	private String password;
 	
