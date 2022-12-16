@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.articTern.enums.CountryEnum;
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
+import com.articTern.model.Address;
 import com.articTern.model.Hotel;
 import com.articTern.model.TripPackage;
 import com.articTern.model.UserSession;
