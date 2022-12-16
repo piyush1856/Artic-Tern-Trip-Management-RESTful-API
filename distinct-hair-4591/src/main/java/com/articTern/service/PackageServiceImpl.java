@@ -31,7 +31,7 @@ public class PackageServiceImpl implements PackageService {
 	
 	
 	@Override
-	public TripPackage addPackage(TripPackage mypackage, String key) throws PackageException {
+	public TripPackage addPackage(TripPackage mypackage, String key) throws CredentialException {
 	
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -54,7 +54,7 @@ public class PackageServiceImpl implements PackageService {
 
 	
 	@Override
-	public TripPackage deletePackage(Integer pid, String key) throws PackageException {
+	public TripPackage deletePackage(Integer pid, String key) throws PackageException, CredentialException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -76,7 +76,7 @@ public class PackageServiceImpl implements PackageService {
 
 
 	@Override
-	public TripPackage searchPackageForAdmin(Integer pid, String key) throws PackageException {
+	public TripPackage searchPackageForAdmin(Integer pid, String key) throws PackageException, CredentialException {
 	
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -96,7 +96,7 @@ public class PackageServiceImpl implements PackageService {
 
 	@Override
 	public List<TripPackage> searchPackageByPackageType(PackageType packageType, String key)
-			throws PackageException {
+			throws PackageException, CredentialException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -115,7 +115,7 @@ public class PackageServiceImpl implements PackageService {
 
 	
 	@Override
-	public List<TripPackage> viewAllPackages(String key) throws PackageException {
+	public List<TripPackage> viewAllPackages(String key) throws PackageException, CredentialException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -139,7 +139,7 @@ public class PackageServiceImpl implements PackageService {
 	
 	@Override
 	public List<TripPackage> searchPackageByPriceRange(Double minPrice, Double maxPrice, String key)
-			throws PackageException {
+			throws PackageException, CredentialException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
