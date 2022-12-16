@@ -50,15 +50,14 @@ public class Booking {
 	@NotEmpty (message = "Booking Title Can't be Empty.")
 	private String bookingTitle;
 	
-	@NotNull(message = "Booking Date Can't Be Null.")
-	private LocalDate bookingDate;
+	private LocalDate bookingDate = LocalDate.now();
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	private TripPackage packageInBooking;
 	
 	
 	@ManyToOne( cascade = CascadeType.ALL)
-	private Customer bookingList;
+	private Customer customer;
 	
 	
 	
