@@ -9,6 +9,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,8 +58,9 @@ public class Hotel {
 	
 	
 	@Embedded
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@NotNull(message = "Hotel Address is mandatory field.")
+	@JoinTable(name = "Hotel_Address")
 	private List<Address> hotelAdresses = new ArrayList<>();
 	
 	@Min(value = 300, message = "Rent should be greater than 300")
@@ -71,7 +73,7 @@ public class Hotel {
 	
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
-	private List<Package> packageList = new ArrayList<>();
+	private List<TripPackage> packageList = new ArrayList<>();
 	
 	
 	

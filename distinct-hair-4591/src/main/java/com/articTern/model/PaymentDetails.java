@@ -46,6 +46,6 @@ public class PaymentDetails {
 	private Double paymentAmount;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private Package packageDetails;
+	private TripPackage packageDetails;
 
 }

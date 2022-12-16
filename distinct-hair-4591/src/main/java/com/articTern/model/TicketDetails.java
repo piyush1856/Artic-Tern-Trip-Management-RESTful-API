@@ -50,7 +50,7 @@ public class TicketDetails {
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private Package packageInTicketDetail;
+	private TripPackage packageInTicketDetail;
 	
 
 }

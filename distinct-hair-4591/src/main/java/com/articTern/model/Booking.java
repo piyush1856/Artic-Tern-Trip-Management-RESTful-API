@@ -54,7 +54,7 @@ public class Booking {
 	private LocalDate bookingDate;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	private Package packageInBooking;
+	private TripPackage packageInBooking;
 	
 	
 	@ManyToOne( cascade = CascadeType.ALL)

@@ -31,7 +31,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Package {
+public class TripPackage {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,7 +55,7 @@ public class Package {
 	private Double packageCost;
 	
 	
-	@NotNull(message = "Payment Details Can't be null.")
+//	@NotNull(message = "Payment Details Can't be null.")
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "packageDetails")
 	@JsonIgnore
 	private PaymentDetails payment;
