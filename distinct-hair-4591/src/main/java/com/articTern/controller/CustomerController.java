@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.articTern.model.Customer;
+import com.articTern.model.Feedback;
 import com.articTern.service.CustomerService;
+import com.articTern.service.FeedbackService;
 
 @RestController
 @RequestMapping("/customer")
@@ -25,6 +27,9 @@ public class CustomerController {
 	
 	@Autowired
 	private CustomerService cService;
+	
+	@Autowired
+	private FeedbackService fService;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Customer> signUpCustomer(@Valid @RequestBody Customer customer){
@@ -87,6 +92,12 @@ public class CustomerController {
 	
 	
 	
+	
+	@PostMapping("/feedback")
+	public ResponseEntity<Feedback> addFeedBack(@Valid @RequestBody Feedback feedback, String key){
+		
+		return new ResponseEntity<Feedback>(fService.addFeedback(feedback,key), HttpStatus.CREATED);
+	}
 	
 	
 	
