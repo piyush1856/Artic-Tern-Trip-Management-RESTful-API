@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.BookingException;
@@ -18,6 +19,7 @@ import com.articTern.repository.CustomerRepo;
 import com.articTern.repository.PackageRepo;
 import com.articTern.repository.SessionRepo;
 
+@Service
 public class BookingServiceImpl implements BookingService {
 
 	@Autowired

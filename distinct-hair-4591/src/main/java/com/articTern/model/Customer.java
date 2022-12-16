@@ -51,7 +51,7 @@ public class Customer extends User{
 	
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "bookingList", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Booking> bookingListInCustomer = new ArrayList<>();
 	
 	
