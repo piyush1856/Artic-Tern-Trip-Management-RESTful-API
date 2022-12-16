@@ -9,4 +9,6 @@ import com.articTern.model.Customer;
 public interface CustomerRepo extends JpaRepository<Customer, Integer>{
 
 	public Customer findByCustomerEmail(String customerEmail);
+	
+	
 }

@@ -1,8 +1,7 @@
 package com.articTern.service;
 
 import java.util.List;
-
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +36,28 @@ public class CustomerServiceImpl implements CustomerService{
 		  
 	}
 
+	
+	
 	@Override
-	public Customer updateCustomer(Customer customer, String key) throws CustomerException {
+	public Customer updateCustomerAddress(Customer customer, String key) throws CustomerException {
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue");
+		}
+		
+		Customer existingCustomer = cRepo.findByCustomerEmail(customer.getCustomerEmail());
+		
+		existingCustomer.setAddresses(customer.getAddresses());
+		
+		Customer updated = cRepo.save(existingCustomer);
+		
+		return updated;
+		
+	}
+
+	@Override
+	public Customer updateCustomerName(Customer customer, String key) throws CustomerException {
 		
 		UserSession userSession = sRepo.findByUuid(key);
 		
@@ -47,44 +66,133 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		
 		Customer existingCustomer = cRepo.findByCustomerEmail(customer.getCustomerEmail());
-		//existingCustomer = new Customer(customer.getCustomerName(), customer.getCustomerEmail(), customer.getCustomerMobile(), customer.getTicketDetails(),customer.getBookingListInCustomer(), customer.getFeedback());
-		
-		existingCustomer.setAddresses(customer.getAddresses());
 		
 		existingCustomer.setCustomerName(customer.getCustomerName());
-		existingCustomer.setCustomerMobile(customer.getCustomerMobile());
-		existingCustomer.setCustomerEmail(customer.getCustomerEmail());
-		existingCustomer.setFeedback(customer.getFeedback());
-		
-		if(userSession.getUserType().equals(UserType.Admin)) {
-			existingCustomer.setBookingListInCustomer(customer.getBookingListInCustomer());
-			existingCustomer.setTicketDetails(customer.getTicketDetails());
-		}else {
-			throw new CustomerException("Only Admin is authorized to update Booking or Ticket Details.");
-		}
-		existingCustomer.setPassword(customer.getPassword());
 		
 		Customer updated = cRepo.save(existingCustomer);
+		
 		return updated;
 	}
 
 	@Override
-	public Customer deleteCustomer(Customer customer) throws CustomerException {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer updateCustomerMobile(Customer customer, String key) throws CustomerException {
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue");
+		}
+		
+		Customer existingCustomer = cRepo.findByCustomerEmail(customer.getCustomerEmail());
+		
+		existingCustomer.setCustomerMobile(customer.getCustomerMobile());
+		
+		Customer updated = cRepo.save(existingCustomer);
+		
+		return updated;
 	}
 
 	@Override
-	public Customer viewCustomer(Integer cutsomerId) throws CustomerException {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer updateCustomerEmail(Customer customer, String key) throws CustomerException {
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue");
+		}
+		
+		Optional<Customer> opt= cRepo.findById(userSession.getUserId());
+		
+		if(opt.isPresent()) {
+			Customer existingCustomer = opt.get();
+			existingCustomer.setCustomerEmail(customer.getCustomerEmail());
+			
+			Customer updated = cRepo.save(existingCustomer);
+			return updated;
+		}else {
+			throw new CustomerException("User not logged in with id : " + userSession.getUserId() + " or email not found. ");
+		}	
+	
 	}
 
 	@Override
-	public List<Customer> viewAllCustomers() throws CustomerException {
-		// TODO Auto-generated method stub
-		return null;
+	public Customer updateCustomerFeedback(Customer customer, String key) throws CustomerException {
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue");
+		}
+		
+		Customer existingCustomer = cRepo.findByCustomerEmail(customer.getCustomerEmail());
+		
+		existingCustomer.setFeedback(customer.getFeedback());
+		
+		Customer updated = cRepo.save(existingCustomer);
+		
+		return updated;
 	}
+
+	@Override
+	public Customer updateCustomerPassword(Customer customer, String key) throws CustomerException {
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue");
+		}
+		
+		Customer existingCustomer = cRepo.findByCustomerEmail(customer.getCustomerEmail());
+		
+		existingCustomer.setPassword(customer.getPassword());
+		
+		Customer updated = cRepo.save(existingCustomer);
+		
+		return updated;
+	}
+
+	@Override
+	public String deleteCustomer(Customer customer, String key) throws CustomerException {
+		
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue");
+		}
+		
+		Optional<Customer> opt= cRepo.findById(userSession.getUserId());
+		
+		if(opt.isPresent() && customer.getPassword().equals(opt.get().getPassword())) {
+			cRepo.delete(opt.get());
+			sRepo.delete(userSession);
+			return  "This Account deleted succesfully - "+opt.get().toString();
+			
+		}else {
+			throw new CredentialException("Enter correct password to delete your account or user doesn't exist");
+		}
+		
+		
+	}
+
+	@Override
+	public Customer viewCustomer(Integer cutsomerId,String key) throws CustomerException {
+		
+		UserSession userSession = sRepo.findByUuid(key);
+		
+		if(userSession == null ) {
+			throw new CredentialException("Please login to continue or enter correct key ..");
+		}
+		
+		if(cutsomerId == userSession.getUserId()) {
+			
+			Optional<Customer> opt= cRepo.findById(userSession.getUserId());
+			
+			return opt.get();
+		}else {
+			throw new CustomerException(" You can only view your profile by entering your userId .. ");
+		}
+		
+		
+	}
+
+
+	
 
 	
 

@@ -58,9 +58,7 @@ public class Customer extends User{
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "customer")
 	private Feedback feedback;
-	
-	
-	
+
 	
 
 }
