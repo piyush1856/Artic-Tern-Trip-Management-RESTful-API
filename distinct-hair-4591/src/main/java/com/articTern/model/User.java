@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +18,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-
-
-
+import com.articTern.enums.UserType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +36,8 @@ public abstract class User {
 	@NotNull(message = "User type Can't be null.")
 	@NotBlank(message = "User type Can't be Blank.")
 	@NotEmpty (message = "User type Can't be Empty.")
-	private com.articTern.enums.UserType userType;
+	@Enumerated(EnumType.STRING)
+	private UserType userType;
 	
 	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$",message = "Password must contain 8 characters and should have atleast 1 Upper Case, 1 Small Case, 1 Number and 1 Special Character")
 	private String password;
