@@ -1,10 +1,13 @@
 package com.articTern.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.articTern.exceptions.CredentialException;
+import com.articTern.exceptions.PackageException;
+import com.articTern.model.Booking;
 import com.articTern.model.Customer;
+<<<<<<< HEAD
 import com.articTern.model.Feedback;
+=======
+import com.articTern.service.BookingService;
+>>>>>>> 19769a163ac84db6f333023b6c51430988037b68
 import com.articTern.service.CustomerService;
 import com.articTern.service.FeedbackService;
 
@@ -28,8 +38,17 @@ public class CustomerController {
 	@Autowired
 	private CustomerService cService;
 	
+<<<<<<< HEAD
 	@Autowired
 	private FeedbackService fService;
+=======
+	
+	@Autowired
+	private BookingService bService;
+	
+	
+	
+>>>>>>> 19769a163ac84db6f333023b6c51430988037b68
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Customer> signUpCustomer(@Valid @RequestBody Customer customer){
@@ -90,6 +109,33 @@ public class CustomerController {
 	}
 	
 	
+	/***********************************************************************************/
+	
+	@PostMapping("/bookings/{pid}")
+	public ResponseEntity<Booking> makeBookingHandler(@Validated @RequestBody Booking booking, 
+			@PathVariable("pid") Integer packageId, @RequestParam("key") String key) throws CredentialException, PackageException{
+		return new ResponseEntity<Booking>(bService.makeBooking(booking, packageId, key), HttpStatus.CREATED);
+	}
+	
+	
+	@DeleteMapping("/bookings/{bid}")
+	public ResponseEntity<Booking> cancelBookingHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws CredentialException, PackageException{
+		return new ResponseEntity<Booking>(bService.cancelBooking(bookingId, key), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/bookings/{bid}")
+	public ResponseEntity<Booking> viewBookingHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws CredentialException, PackageException{
+		return new ResponseEntity<Booking>(bService.viewBooking(bookingId, key), HttpStatus.FOUND);
+	}
+	
+	
+	@GetMapping("/bookings")
+	public ResponseEntity<List<Booking>> viewAllBookingForCustomerHandler(@RequestParam("key") String key) throws CredentialException, PackageException{
+		
+		return new ResponseEntity<List<Booking>>(bService.viewAllBookingForCustomer(key), HttpStatus.FOUND);
+	
+	}
 	
 	
 	
@@ -99,6 +145,17 @@ public class CustomerController {
 		return new ResponseEntity<Feedback>(fService.addFeedback(feedback,key), HttpStatus.CREATED);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/***********************************************************************************/
 	
 	
 	
