@@ -7,9 +7,9 @@ import com.articTern.model.Customer;
 
 public interface CustomerService {
 	
-	public Customer addCustomer(Customer customer) throws CustomerException;
+	public Customer signUpCustomer(Customer customer) throws CustomerException;
 	
-	public Customer updateCustomer(Customer customer) throws CustomerException;
+	public Customer updateCustomer(Customer customer, String key) throws CustomerException;
 	
 	public Customer deleteCustomer(Customer customer) throws CustomerException;
 	
