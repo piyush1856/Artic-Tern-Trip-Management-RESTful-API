@@ -23,11 +23,11 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
 import com.articTern.model.Customer;
-<<<<<<< HEAD
+ 
 import com.articTern.model.Feedback;
-=======
+ 
 import com.articTern.service.BookingService;
->>>>>>> 19769a163ac84db6f333023b6c51430988037b68
+ 
 import com.articTern.service.CustomerService;
 import com.articTern.service.FeedbackService;
 
@@ -38,17 +38,17 @@ public class CustomerController {
 	@Autowired
 	private CustomerService cService;
 	
-<<<<<<< HEAD
+ 
 	@Autowired
 	private FeedbackService fService;
-=======
+ 
 	
 	@Autowired
 	private BookingService bService;
 	
 	
 	
->>>>>>> 19769a163ac84db6f333023b6c51430988037b68
+ 
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Customer> signUpCustomer(@Valid @RequestBody Customer customer){
