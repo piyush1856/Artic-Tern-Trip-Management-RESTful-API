@@ -34,8 +34,8 @@ public abstract class User {
 	private Integer userId;
 	
 	@NotNull(message = "User type Can't be null.")
-	@NotBlank(message = "User type Can't be Blank.")
-	@NotEmpty (message = "User type Can't be Empty.")
+//	@NotBlank(message = "User type Can't be Blank.")
+//	@NotEmpty (message = "User type Can't be Empty.")
 	@Enumerated(EnumType.STRING)
 	private UserType userType;
 	
