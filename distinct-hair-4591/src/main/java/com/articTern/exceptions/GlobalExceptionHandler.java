@@ -2,6 +2,8 @@ package com.articTern.exceptions;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.RollbackException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -253,6 +255,15 @@ public class GlobalExceptionHandler {
 					
 			
 			MyErrorDetails err=new MyErrorDetails(LocalDateTime.now(),"Validation Error",nfe.getBindingResult().getFieldError().getDefaultMessage());
+			
+			return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
+							
+		}
+		
+		@ExceptionHandler(RollbackException.class)
+		public ResponseEntity<MyErrorDetails> myRollBackException(RollbackException nfe,WebRequest req)  {
+					
+			MyErrorDetails err=new MyErrorDetails(LocalDateTime.now(), nfe.getMessage(), req.getDescription(false));
 			
 			return new ResponseEntity<>(err,HttpStatus.BAD_REQUEST);
 							

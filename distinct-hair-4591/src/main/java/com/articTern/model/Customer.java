@@ -37,7 +37,7 @@ public class Customer extends User{
 	@Size(min = 3, max = 20, message = "Customer Name length should be between 3 and 20 characters.")
 	private String customerName;
 	
-	@Email
+	@Email(message = "Enter Valid Email pattern or email don't exists.")
 	@Column(unique = true)
 	private String customerEmail;
 	

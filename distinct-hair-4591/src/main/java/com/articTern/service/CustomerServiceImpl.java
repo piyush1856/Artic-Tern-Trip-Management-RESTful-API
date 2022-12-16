@@ -103,9 +103,11 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		if(opt.isPresent()) {
 			Customer existingCustomer = opt.get();
+			
 			existingCustomer.setCustomerEmail(customer.getCustomerEmail());
 			
 			Customer updated = cRepo.save(existingCustomer);
+				
 			return updated;
 		}else {
 			throw new CustomerException("User not logged in with id : " + userSession.getUserId() + " or email not found. ");
