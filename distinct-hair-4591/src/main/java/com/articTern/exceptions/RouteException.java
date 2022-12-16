@@ -1,6 +1,6 @@
 package com.articTern.exceptions;
 
-public class RouteException extends Exception {
+public class RouteException extends RuntimeException {
 	
 	public RouteException() {
 		// TODO Auto-generated constructor stub

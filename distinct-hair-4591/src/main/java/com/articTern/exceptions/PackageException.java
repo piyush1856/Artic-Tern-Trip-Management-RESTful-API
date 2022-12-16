@@ -1,6 +1,6 @@
 package com.articTern.exceptions;
 
-public class PackageException extends Exception {
+public class PackageException extends RuntimeException {
 	
 	public PackageException() {
 		// TODO Auto-generated constructor stub

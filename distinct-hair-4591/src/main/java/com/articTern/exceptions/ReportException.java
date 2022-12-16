@@ -1,6 +1,6 @@
 package com.articTern.exceptions;
 
-public class ReportException extends Exception {
+public class ReportException extends RuntimeException {
 	
 	public ReportException() {
 		// TODO Auto-generated constructor stub

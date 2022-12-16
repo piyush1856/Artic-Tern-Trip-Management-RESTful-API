@@ -1,6 +1,6 @@
 package com.articTern.exceptions;
 
-public class TicketDetailsException extends Exception {
+public class TicketDetailsException extends RuntimeException {
 	
 	public TicketDetailsException() {
 		// TODO Auto-generated constructor stub

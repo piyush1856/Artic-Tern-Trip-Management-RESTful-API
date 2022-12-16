@@ -1,6 +1,6 @@
 package com.articTern.exceptions;
 
-public class TravelAgencyException extends Exception {
+public class TravelAgencyException extends RuntimeException {
 	
 	public TravelAgencyException() {
 		// TODO Auto-generated constructor stub
