@@ -23,8 +23,13 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
 import com.articTern.model.Customer;
+ 
+import com.articTern.model.Feedback;
+ 
 import com.articTern.service.BookingService;
+ 
 import com.articTern.service.CustomerService;
+import com.articTern.service.FeedbackService;
 
 @RestController
 @RequestMapping("/customer")
@@ -33,12 +38,17 @@ public class CustomerController {
 	@Autowired
 	private CustomerService cService;
 	
+ 
+	@Autowired
+	private FeedbackService fService;
+ 
 	
 	@Autowired
 	private BookingService bService;
 	
 	
 	
+ 
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Customer> signUpCustomer(@Valid @RequestBody Customer customer){
@@ -128,6 +138,12 @@ public class CustomerController {
 	}
 	
 	
+	
+	@PostMapping("/feedback")
+	public ResponseEntity<Feedback> addFeedBack(@Valid @RequestBody Feedback feedback, @RequestParam String key){
+		
+		return new ResponseEntity<Feedback>(fService.addFeedback(feedback,key), HttpStatus.CREATED);
+	}
 	
 	
 	
