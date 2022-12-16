@@ -38,7 +38,7 @@ public class LoginServiceImpl implements LoginService {
 		if(dto.getUserType().equals(UserType.Admin)) {		
 		      existingUser = aRepo.findByAdminEmail(dto.getEmailId());		 
 		      
-		} else {
+		} else if(dto.getUserType().equals(UserType.Customer)) {
 			 existingUser = cRepo.findByCustomerEmail(dto.getEmailId());			
 		}
 		
@@ -62,7 +62,7 @@ public class LoginServiceImpl implements LoginService {
 		 }
 		 
 		 String key = RandomString.make(6);		 
-		 UserSession session = new UserSession(existingUser.getUserId(), key, LocalDateTime.now(), UserType.Customer);
+		 UserSession session = new UserSession(existingUser.getUserId(), key, LocalDateTime.now(), dto.getUserType());
 	
 		 sRepo.save(session);
 
