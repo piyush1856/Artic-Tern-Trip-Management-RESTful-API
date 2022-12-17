@@ -140,9 +140,9 @@ public class CustomerController {
 	
 	
 	@PostMapping("/feedback")
-	public ResponseEntity<Feedback> addFeedBack(@Valid @RequestBody Feedback feedback, @RequestParam String key){
+	public ResponseEntity<String> addFeedBack(@Valid @RequestBody Feedback feedback, @RequestParam String key){
 		
-		return new ResponseEntity<Feedback>(fService.addFeedback(feedback,key), HttpStatus.CREATED);
+		return new ResponseEntity<String>(fService.addFeedback(feedback,key), HttpStatus.CREATED);
 	}
 	
 	

@@ -29,7 +29,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 	
 	
 	@Override
-	public Feedback addFeedback(Feedback feedback, String key) throws FeedbackException {
+	public String addFeedback(Feedback feedback, String key) throws FeedbackException {
 		
 		
 		UserSession userSession = sRepo.findByUuid(key);
@@ -51,7 +51,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 //			cRepo.save(opt.get());
 			fRepo.save(feedback);
 			
-			return feedback;
+			return "Thank you for ginving your valuable feedback.";
 			
 		}else {
 			throw new FeedbackException("Customer not present");
@@ -62,6 +62,14 @@ public class FeedbackServiceImpl implements FeedbackService{
 		
 		
 		
+	}
+
+
+
+	@Override
+	public Feedback findFeedbackByCustomerId(Integer customerId, String key) throws FeedbackException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
