@@ -1,5 +1,6 @@
 package com.articTern.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,13 +123,26 @@ public class BookingServiceImpl implements BookingService {
 		}
 		
 		
-		List<Booking> allBookingDetails = bRepo.findAllBookingsOfCustomer(usersession.getUserId());
+		List<Booking> allBookingDetails = bRepo.findAll();
+		
+		
 		
 		if(allBookingDetails.isEmpty()) {
 			throw new BookingException("No booking found");
 		}
 		
-		return allBookingDetails;
+		List<Booking> bookingListForCustomer = new ArrayList<>();
+		
+		for(int i = 0; i < allBookingDetails.size(); i++) {
+			if(allBookingDetails.get(i).getCustomer().getUserId() == usersession.getUserId()) {
+				bookingListForCustomer.add(allBookingDetails.get(i));
+			}
+		}
+		if(bookingListForCustomer.isEmpty()) {
+			throw new BookingException("No booking found");
+		}
+		
+		return bookingListForCustomer;
 	}
 
 	@Override
