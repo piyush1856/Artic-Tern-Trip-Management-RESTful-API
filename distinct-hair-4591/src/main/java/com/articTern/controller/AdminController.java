@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.articTern.dtoes.FeedBackDTO;
 import com.articTern.enums.PackageType;
+import com.articTern.model.Bus;
 import com.articTern.model.Customer;
 import com.articTern.model.TravelAgency;
 import com.articTern.model.TripPackage;
+import com.articTern.service.BusService;
 import com.articTern.service.FeedbackService;
 import com.articTern.service.PackageService;
 import com.articTern.service.TravelAgencyService;
@@ -39,6 +41,9 @@ class AdminController {
 	
 	@Autowired
 	private TravelAgencyService tService;
+	
+	@Autowired
+	private BusService bService;
 	
 	
 	@PostMapping("/addpackage")
@@ -128,17 +133,42 @@ class AdminController {
 		return new ResponseEntity<TravelAgency>(tService.searchById(tId, key), HttpStatus.FOUND);		
 	}
 	
-	@GetMapping("/view/travelagency")
+	@GetMapping("/search/alltravelagency")
 	public ResponseEntity<List<TravelAgency>> viewAllTravelAgency(@RequestParam("key") String key){		
 		return new ResponseEntity<List<TravelAgency>>(tService.viewAllTravelAgency(key), HttpStatus.FOUND);		
 	}
 	
 	
+	/*********************************************************************************************************************************************************************/
 	
 	
+	@PostMapping("/bus/add")
+	public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus b, @RequestParam("key") String key){		
+		return new ResponseEntity<Bus>(bService.addBus(b, key), HttpStatus.CREATED);		
+	}
+	
+	@PutMapping("/update/bus/type")
+	public ResponseEntity<Bus> updateBusType(@RequestBody Bus b,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Bus>(bService.updateBusType(b, key), HttpStatus.ACCEPTED);
+	}
+	
+	@DeleteMapping("/update/bus/delete/{id}")
+	public ResponseEntity<String> deleteBus(@PathVariable("id") Integer tId,@RequestParam("key") String key){
+
+		return new ResponseEntity<String>(bService.deleteBus(tId, key),HttpStatus.ACCEPTED);
+	}
 	
 	
+	@GetMapping("/search/bus/{id}")
+	public ResponseEntity<Bus> searchBusById(@PathVariable("id") Integer bId,@RequestParam("key") String key){		
+		return new ResponseEntity<Bus>(bService.getBusById(bId, key), HttpStatus.FOUND);		
+	}
 	
+	@GetMapping("/search/allbus")
+	public ResponseEntity<List<Bus>> viewAllBus(@RequestParam("key") String key){		
+		return new ResponseEntity<List<Bus>>(bService.getAllBus(key), HttpStatus.FOUND);		
+	}
 	
 	
 	

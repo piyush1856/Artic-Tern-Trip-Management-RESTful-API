@@ -23,12 +23,13 @@ import com.articTern.dtoes.FeedBackDTO;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
+import com.articTern.model.Bus;
 import com.articTern.model.Customer;
  
 import com.articTern.model.Feedback;
  
 import com.articTern.service.BookingService;
- 
+import com.articTern.service.BusService;
 import com.articTern.service.CustomerService;
 import com.articTern.service.FeedbackService;
 
@@ -47,7 +48,8 @@ public class CustomerController {
 	@Autowired
 	private BookingService bService;
 	
-	
+	@Autowired
+	private BusService busService;
 	
  
 	
@@ -164,9 +166,15 @@ public class CustomerController {
 	/***********************************************************************************/
 	
 	
+	@GetMapping("/search/bus/{id}")
+	public ResponseEntity<Bus> searchBusById(@PathVariable("id") Integer bId,@RequestParam("key") String key){		
+		return new ResponseEntity<Bus>(busService.getBusById(bId, key), HttpStatus.FOUND);		
+	}
 	
-	
-	
+	@GetMapping("/search/allbus")
+	public ResponseEntity<List<Bus>> viewAllBus(@RequestParam("key") String key){		
+		return new ResponseEntity<List<Bus>>(busService.getAllBus(key), HttpStatus.FOUND);		
+	}
 	
 	
 	
