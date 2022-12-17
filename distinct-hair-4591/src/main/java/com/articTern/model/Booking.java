@@ -52,11 +52,11 @@ public class Booking {
 	
 	private LocalDate bookingDate = LocalDate.now();
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private TripPackage packageInBooking;
 	
 	
-	@ManyToOne( cascade = CascadeType.ALL)
+	@ManyToOne( cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Customer customer;
 	
 	

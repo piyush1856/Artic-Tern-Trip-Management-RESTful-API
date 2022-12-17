@@ -48,7 +48,7 @@ public class Admin extends User{
 	private String adminMobile;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "admin")
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},mappedBy = "admin")
 	private List<Report> reportList = new ArrayList<>();
 
 	

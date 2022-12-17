@@ -57,22 +57,22 @@ public class TripPackage {
 	private Double packageCost;
 	
 	
-//	@NotNull(message = "Payment Details Can't be null.")
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "packageDetails")
+	@NotNull(message = "Payment Details Can't be null.")
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "packageDetails")
 	@JsonIgnore
 	private PaymentDetails payment;
 	
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "packageInTicketDetail")
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "packageInTicketDetail")
 	private TicketDetails ticketDetailInPackage;
 	
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "packageInBooking", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "packageInBooking", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Booking> bookingList = new ArrayList<>();
 	
 	
-	@ManyToMany(mappedBy = "packageList", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "packageList", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Hotel> hotelList = new ArrayList<>();
 	
 	

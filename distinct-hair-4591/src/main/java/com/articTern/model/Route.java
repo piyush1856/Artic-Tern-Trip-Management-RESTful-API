@@ -60,11 +60,11 @@ public class Route {
 	private Double fare;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "busRoute", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "busRoute", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Bus> routeBusList = new ArrayList<>();
 	
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ticketRoute")
+	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "ticketRoute")
 	private List<TicketDetails> routeTicketList = new ArrayList<>();
 	
 	

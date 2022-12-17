@@ -51,12 +51,12 @@ public class Bus {
 	private Integer busCapacity;
 	
  
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "travelId")
 	private TravelAgency travelAgency;
 	
 	 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "routeId")
 	private Route busRoute;
 	

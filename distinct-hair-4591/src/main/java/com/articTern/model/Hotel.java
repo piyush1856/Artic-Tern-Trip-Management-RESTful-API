@@ -74,7 +74,7 @@ public class Hotel {
 	
 	
 	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<TripPackage> packageList = new ArrayList<>();
 	
 	
