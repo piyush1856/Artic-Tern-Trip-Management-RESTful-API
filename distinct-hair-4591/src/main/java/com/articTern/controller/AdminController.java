@@ -32,6 +32,17 @@ import com.articTern.service.PackageService;
 import com.articTern.service.TravelAgencyService;
 
 
+import com.articTern.dtoes.PackageHotelDTO;
+import com.articTern.enums.PackageType;
+import com.articTern.exceptions.CredentialException;
+import com.articTern.exceptions.HotelException;
+import com.articTern.exceptions.PackageException;
+import com.articTern.model.Hotel;
+import com.articTern.model.TripPackage;
+import com.articTern.service.HotelService;
+
+
+
 @RestController
 @RequestMapping("/admin")
 class AdminController {
@@ -39,7 +50,7 @@ class AdminController {
 	@Autowired
 	private PackageService pService;
 	
-
+	@Autowired
 	private FeedbackService fservice;
 	
 	@Autowired
@@ -47,8 +58,8 @@ class AdminController {
 	
 	@Autowired
 	private BusService bService;
-
-	
+	@Autowired
+	private HotelService hService;
 	
 	@PostMapping("/addpackage")
 	public ResponseEntity<TripPackage> addPackageHandler(@Valid @RequestBody PackageHotelDTO packageHotelDTO, @RequestParam("key") String key) throws CredentialException{		
