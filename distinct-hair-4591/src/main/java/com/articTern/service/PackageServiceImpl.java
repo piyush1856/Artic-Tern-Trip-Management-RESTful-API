@@ -1,14 +1,18 @@
 package com.articTern.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.articTern.dtoes.PackageHotelDTO;
 import com.articTern.enums.PackageType;
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.CredentialException;
+import com.articTern.exceptions.HotelException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Hotel;
 import com.articTern.model.TripPackage;
@@ -31,21 +35,45 @@ public class PackageServiceImpl implements PackageService {
 	
 	
 	@Override
-	public TripPackage addPackage(TripPackage mypackage, String key) throws CredentialException {
-	
+	public TripPackage addPackage(PackageHotelDTO packageHotelDTO, String key) throws CredentialException {
+		
+		TripPackage mypackage = packageHotelDTO.getTripPackage();
+		Set<Integer> hidSet = packageHotelDTO.getHidSet();
+		
 		UserSession usersession = sRepo.findByUuid(key);
 		
 		if(usersession == null || usersession.getUserType().equals(UserType.Customer)) {
 			throw new CredentialException("Kindly login as Admin");
 		}
 		
+		if(hidSet == null) {
+			throw new HotelException("No hotel selected...");
+		}
+		
+		List<Integer> hidList = new ArrayList<>(hidSet);
+		List<Hotel> hotelList = new ArrayList<>();
 		
 		
-		List<Hotel> hotelList = mypackage.getHotelList();
 		
-		for(Hotel hotel : hotelList) {
-			hotel.getPackageList().add(mypackage);
-			hRepo.save(hotel);
+		for(int i = 0; i < hidList.size(); i++) {	
+			Optional<Hotel> op = hRepo.findById(hidList.get(i));
+			
+			if(op.isEmpty()) {
+				throw new HotelException("Invalid Hotel ID : " +hidList.get(i));
+			}
+			
+			hotelList.add(op.get());
+			
+		}
+		
+		
+		
+		for(int j = 0; j < hotelList.size(); j++) {
+			mypackage.getHotelList().add(hotelList.get(j));
+			hotelList.get(j).getPackageList().add(mypackage);
+			
+			hRepo.save(hotelList.get(j));
+			
 		}
 		
 		return pRepo.save(mypackage);
@@ -161,6 +189,42 @@ public class PackageServiceImpl implements PackageService {
 		}
 		
 		return myPackages;
+	}
+
+
+	@Override
+	public String addHotelInPackage(Integer pid, Integer hid, String key)
+			throws CredentialException, HotelException, PackageException {
+
+
+		Optional<Hotel> existingHotel = hRepo.findById(hid);
+		
+		if(existingHotel.isEmpty()) {
+			throw new HotelException("Invalid Hotel ID ");
+		}
+		
+		
+		Optional<TripPackage> existingPackage = pRepo.findById(pid);
+		
+		
+		
+		if(existingPackage.isEmpty()) {
+			throw new PackageException("Invalid Package id");
+		}
+		
+		for(int i = 0; i < existingPackage.get().getHotelList().size(); i++) {
+			if(existingPackage.get().getHotelList().get(i).getHotelID() == hid) {
+				throw new HotelException("This hotel is already present in the package");
+			}
+			
+		}
+		
+		existingPackage.get().getHotelList().add(existingHotel.get());
+		existingHotel.get().getPackageList().add(existingPackage.get());
+		
+		pRepo.save(existingPackage.get());
+		
+		return "Hotel "+existingHotel.get().getHotelName()+" has been added in the package "+existingPackage.get().getPackageName();
 	}
 
 

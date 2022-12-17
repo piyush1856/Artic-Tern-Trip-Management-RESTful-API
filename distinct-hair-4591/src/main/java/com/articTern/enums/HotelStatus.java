@@ -2,7 +2,7 @@ package com.articTern.enums;
 
 public enum HotelStatus {
 	
-	WAITING("Waiting"),
+	OPEN("Open"),
 	BOOKED("Booked"),
 	CANCEL("Cancelled");
 	

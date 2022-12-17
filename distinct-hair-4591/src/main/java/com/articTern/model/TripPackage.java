@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,6 +41,7 @@ public class TripPackage {
 	@NotNull(message = "Package Name Can't be null.")
 	@NotBlank(message = "Package Name Can't be Blank.")
 	@NotEmpty (message = "Package Name Can't be Empty.")
+	@Column(unique = false)
 	private String packageName;
 	
 	@NotNull(message = "Package Description Can't be null.")

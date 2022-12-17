@@ -10,8 +10,8 @@ import com.articTern.model.Booking;
 
 @Repository
 public interface BookingRepo extends JpaRepository<Booking, Integer>{
-	
-	@Query("select  b from Booking b where userId = ?1")
-	public List<Booking> findAllBookingsOfCustomer(Integer cId);
+//	
+//	@Query("select b from Booking b where userId = ?1")
+//	public List<Booking> findAllBookingsOfCustomer(Integer cId);
 	
 }
