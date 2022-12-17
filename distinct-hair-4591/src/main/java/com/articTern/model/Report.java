@@ -44,7 +44,7 @@ public class Report {
 	@NotEmpty (message = "Report Description Can't be Empty.")
 	private String reportDescription;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Admin admin;
 	
 	

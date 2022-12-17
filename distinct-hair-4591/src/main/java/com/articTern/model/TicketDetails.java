@@ -41,15 +41,15 @@ public class TicketDetails {
 	@Min(value = 1, message = "Minimum number of person should be 1")
 	private Integer noOfPerson;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Route ticketRoute;
 	
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Customer customer;
 	
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private TripPackage packageInTicketDetail;
 	
 

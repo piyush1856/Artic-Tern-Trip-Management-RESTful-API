@@ -45,7 +45,7 @@ public class Feedback {
 	private LocalDate submitDate = LocalDate.now();
 	
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Customer customer;
 	
 	

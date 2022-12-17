@@ -45,7 +45,7 @@ public class PaymentDetails {
 	@NotNull(message = "Payment Amount Can't be null.")
 	private Double paymentAmount;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private TripPackage packageDetails;
 
 }

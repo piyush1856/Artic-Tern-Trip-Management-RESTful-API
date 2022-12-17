@@ -96,6 +96,20 @@ public class PackageServiceImpl implements PackageService {
 			throw new PackageException("Invalid package id");
 		}
 		
+		List<Hotel> hotelList = myPackage.get().getHotelList();
+		
+		for(Hotel hotel : hotelList) {
+			hotel.getPackageList().remove(myPackage.get());
+			hRepo.save(hotel);
+		}
+		
+		myPackage.get().getHotelList().clear();
+		
+		
+		
+		pRepo.save(myPackage.get());
+		
+		
 		pRepo.delete(myPackage.get());
 	
 		return myPackage.get();
