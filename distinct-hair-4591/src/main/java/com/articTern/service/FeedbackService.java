@@ -5,6 +5,8 @@ import com.articTern.model.Feedback;
 
 public interface FeedbackService {
 	
-	public Feedback addFeedback(Feedback feedback,String key) throws FeedbackException;
+	public String addFeedback(Feedback feedback,String key) throws FeedbackException;
+	
+	public Feedback findFeedbackByCustomerId(Integer customerId,String key) throws FeedbackException;
 
 }
