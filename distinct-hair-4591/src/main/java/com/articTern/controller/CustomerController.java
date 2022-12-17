@@ -147,7 +147,12 @@ public class CustomerController {
 	
 	
 	
+	@GetMapping("/feedback/{cid}")
+	public ResponseEntity<String> viewFeedbackByCustomerId(@PathVariable("cid") Integer customerId, @RequestParam("key") String key){
+		
+		return new ResponseEntity<String>(fService.findFeedbackByCustomerId(customerId, key), HttpStatus.FOUND);
 	
+	}
 	
 	
 	

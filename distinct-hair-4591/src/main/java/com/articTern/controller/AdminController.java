@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.articTern.enums.PackageType;
 import com.articTern.model.TripPackage;
+import com.articTern.service.FeedbackService;
 import com.articTern.service.PackageService;
 
 
@@ -27,6 +28,9 @@ class AdminController {
 	
 	@Autowired
 	private PackageService pService;
+	
+	@Autowired
+	private FeedbackService fservice;
 	
 	
 	@PostMapping("/addpackage")
@@ -60,6 +64,33 @@ class AdminController {
 																						@RequestParam("max") Double maxPrice, @RequestParam("key") String key) {
 		return new ResponseEntity<List<TripPackage>>(pService.searchPackageByPriceRange(minPrice, maxPrice, key), HttpStatus.FOUND);
 	}
+	
+	@GetMapping("/feedback/{fid}")
+	public ResponseEntity<String> viewFeedbackByfeedbackId(@PathVariable("fid") Integer fid,@RequestParam("key") String key){		
+		return new ResponseEntity<String>(fservice.findFeedbackByfeedbackId(fid, key), HttpStatus.FOUND);		
+	}
+	
+	@GetMapping("/feedbacks")
+	public ResponseEntity<List<String>> viewAllFeedback(@RequestParam("key") String key){		
+		return new ResponseEntity<List<String>>(fservice.viewAllfeedback(key), HttpStatus.FOUND);		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
