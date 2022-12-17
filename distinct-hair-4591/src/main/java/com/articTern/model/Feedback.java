@@ -42,7 +42,7 @@ public class Feedback {
 	@Max(value=10, message="Rating should be in between 1 to 10")
 	private Integer rating;
 	
-	private LocalDate submitDate;
+	private LocalDate submitDate = LocalDate.now();
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)

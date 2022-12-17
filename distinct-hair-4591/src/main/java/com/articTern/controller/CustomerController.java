@@ -19,12 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.articTern.dtoes.FeedBackDTO;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
+import com.articTern.model.Bus;
 import com.articTern.model.Customer;
+ 
+import com.articTern.model.Feedback;
+ 
 import com.articTern.service.BookingService;
+import com.articTern.service.BusService;
 import com.articTern.service.CustomerService;
+import com.articTern.service.FeedbackService;
 
 @RestController
 @RequestMapping("/customer")
@@ -33,12 +40,18 @@ public class CustomerController {
 	@Autowired
 	private CustomerService cService;
 	
+ 
+	@Autowired
+	private FeedbackService fService;
+ 
 	
 	@Autowired
 	private BookingService bService;
 	
+	@Autowired
+	private BusService busService;
 	
-	
+ 
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Customer> signUpCustomer(@Valid @RequestBody Customer customer){
@@ -129,9 +142,20 @@ public class CustomerController {
 	
 	
 	
+	@PostMapping("/feedback")
+	public ResponseEntity<String> addFeedBack(@Valid @RequestBody Feedback feedback, @RequestParam String key){
+		
+		return new ResponseEntity<String>(fService.addFeedback(feedback,key), HttpStatus.CREATED);
+	}
 	
 	
 	
+	@GetMapping("/feedback/{cid}")
+	public ResponseEntity<FeedBackDTO> viewFeedbackByCustomerId(@PathVariable("cid") Integer customerId, @RequestParam("key") String key){
+		
+		return new ResponseEntity<FeedBackDTO>(fService.findFeedbackByCustomerId(customerId, key), HttpStatus.FOUND);
+	
+	}
 	
 	
 	
@@ -142,9 +166,15 @@ public class CustomerController {
 	/***********************************************************************************/
 	
 	
+	@GetMapping("/search/bus/{id}")
+	public ResponseEntity<Bus> searchBusById(@PathVariable("id") Integer bId,@RequestParam("key") String key){		
+		return new ResponseEntity<Bus>(busService.getBusById(bId, key), HttpStatus.FOUND);		
+	}
 	
-	
-	
+	@GetMapping("/search/allbus")
+	public ResponseEntity<List<Bus>> viewAllBus(@RequestParam("key") String key){		
+		return new ResponseEntity<List<Bus>>(busService.getAllBus(key), HttpStatus.FOUND);		
+	}
 	
 	
 	
