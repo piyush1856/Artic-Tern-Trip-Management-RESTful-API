@@ -67,7 +67,7 @@ class AdminController {
 	}
 	
 	@PostMapping("/addhotelinpackage/{pid}/{hid}")
-	public ResponseEntity<String> addHotelInPackage(@PathVariable("pid") Integer pid, @PathVariable("hid") Integer hid, String key) throws CredentialException, HotelException, PackageException{		
+	public ResponseEntity<String> addHotelInPackageHandler(@PathVariable("pid") Integer pid, @PathVariable("hid") Integer hid, String key) throws CredentialException, HotelException, PackageException{		
 		return new ResponseEntity<String>(pService.addHotelInPackage(pid, hid, key), HttpStatus.ACCEPTED);		
 	}
 	
@@ -190,6 +190,8 @@ class AdminController {
 	public ResponseEntity<List<Bus>> viewAllBus(@RequestParam("key") String key){		
 		return new ResponseEntity<List<Bus>>(bService.getAllBus(key), HttpStatus.FOUND);		
 	}
+	
+	
 	
 	@PostMapping("/addhotel")
 	public ResponseEntity<Hotel> addHotelHandler(@Valid @RequestBody Hotel hotel, @RequestParam("key") String key) throws CredentialException{

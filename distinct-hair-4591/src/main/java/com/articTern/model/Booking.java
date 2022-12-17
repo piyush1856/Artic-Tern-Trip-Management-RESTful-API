@@ -1,8 +1,8 @@
 package com.articTern.model;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.time.LocalDateTime;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,8 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;   
+import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -40,17 +41,17 @@ public class Booking {
 	@Enumerated(EnumType.STRING)
 	private BookingType bookingType;
 	
-	@NotNull(message = "Description Can't be null.")
-	@NotBlank(message = "Description Can't be Blank.")
-	@NotEmpty (message = "Description Can't be Empty.")
-	private String description;
-	
 	@NotNull(message = "Booking Title Can't be null.")
 	@NotBlank(message = "Booking Title Can't be Blank.")
 	@NotEmpty (message = "Booking Title Can't be Empty.")
 	private String bookingTitle;
 	
-	private LocalDate bookingDate = LocalDate.now();
+	@NotNull(message = "Number of person can not be null")
+	@Min(value = 1, message = "Minimum number of person should be 1")
+	private Integer noOfPerson;
+	
+	private LocalDateTime bookingDateTime = LocalDateTime.now();
+	
 	
 	@ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private TripPackage packageInBooking;
@@ -58,6 +59,12 @@ public class Booking {
 	
 	@ManyToOne( cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Customer customer;
+	
+	
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)	
+	private PaymentDetails payment;
+	
 	
 	
 	

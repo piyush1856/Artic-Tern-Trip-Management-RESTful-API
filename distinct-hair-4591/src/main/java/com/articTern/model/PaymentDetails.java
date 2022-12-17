@@ -34,9 +34,9 @@ public class PaymentDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer paymentId;
 	
-	private LocalDate paymentDate;
-	
-	private LocalTime paymentTime;
+//	private LocalDate paymentDate;
+//	
+//	private LocalTime paymentTime;
 	
 	@NotNull(message = "Payment Mode  Can't be null.")
 	@Enumerated(EnumType.STRING)
@@ -45,7 +45,6 @@ public class PaymentDetails {
 	@NotNull(message = "Payment Amount Can't be null.")
 	private Double paymentAmount;
 	
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	private TripPackage packageDetails;
+
 
 }

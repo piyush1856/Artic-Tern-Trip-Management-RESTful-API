@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.articTern.dtoes.FeedBackDTO;
+import com.articTern.dtoes.TicketDetails;
+import com.articTern.enums.PackageType;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
@@ -27,11 +29,12 @@ import com.articTern.model.Bus;
 import com.articTern.model.Customer;
  
 import com.articTern.model.Feedback;
- 
+import com.articTern.model.TripPackage;
 import com.articTern.service.BookingService;
 import com.articTern.service.BusService;
 import com.articTern.service.CustomerService;
 import com.articTern.service.FeedbackService;
+import com.articTern.service.PackageService;
 
 @RestController
 @RequestMapping("/customer")
@@ -50,6 +53,9 @@ public class CustomerController {
 	
 	@Autowired
 	private BusService busService;
+	
+	@Autowired
+	private PackageService pService;
 	
  
 	
@@ -115,15 +121,15 @@ public class CustomerController {
 	/***********************************************************************************/
 	
 	@PostMapping("/bookings/{pid}")
-	public ResponseEntity<Booking> makeBookingHandler(@Validated @RequestBody Booking booking, 
+	public ResponseEntity<TicketDetails> makeBookingHandler(@Validated @RequestBody Booking booking, 
 			@PathVariable("pid") Integer packageId, @RequestParam("key") String key) throws CredentialException, PackageException{
-		return new ResponseEntity<Booking>(bService.makeBooking(booking, packageId, key), HttpStatus.CREATED);
+		return new ResponseEntity<TicketDetails>(bService.makeBooking(booking, packageId, key), HttpStatus.CREATED);
 	}
 	
 	
 	@DeleteMapping("/bookings/{bid}")
-	public ResponseEntity<Booking> cancelBookingHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws CredentialException, PackageException{
-		return new ResponseEntity<Booking>(bService.cancelBooking(bookingId, key), HttpStatus.OK);
+	public ResponseEntity<String> cancelBookingHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws CredentialException, PackageException{
+		return new ResponseEntity<String>(bService.cancelBooking(bookingId, key), HttpStatus.OK);
 	}
 	
 	
@@ -174,6 +180,27 @@ public class CustomerController {
 	@GetMapping("/search/allbus")
 	public ResponseEntity<List<Bus>> viewAllBus(@RequestParam("key") String key){		
 		return new ResponseEntity<List<Bus>>(busService.getAllBus(key), HttpStatus.FOUND);		
+	}
+	
+	
+	
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+	
+	@GetMapping("/searchpackagebytype")
+	public ResponseEntity<List<TripPackage>> searchPackageByPackageTypeHandler(@RequestParam("ptype") PackageType packageType, @RequestParam("key")  String key) throws PackageException, CredentialException {		
+		return new ResponseEntity<List<TripPackage>>(pService.searchPackageByPackageType(packageType, key), HttpStatus.FOUND);		
+	}
+	
+	
+	@GetMapping("/viewallpackages")
+	public ResponseEntity<List<TripPackage>> viewAllPackagesHandler(@RequestParam("key") String key) throws PackageException, CredentialException {		
+		return new ResponseEntity<List<TripPackage>>(pService.viewAllPackages(key), HttpStatus.FOUND);		
+	}
+	
+	@GetMapping("/searchpackagebyprice")
+	public ResponseEntity< List<TripPackage>> searchPackageByPriceRangeHandler(@RequestParam("min") Double minPrice, 
+																						@RequestParam("max") Double maxPrice, @RequestParam("key") String key) throws PackageException, CredentialException {
+		return new ResponseEntity<List<TripPackage>>(pService.searchPackageByPriceRange(minPrice, maxPrice, key), HttpStatus.FOUND);
 	}
 	
 	
