@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.articTern.dtoes.FeedBackDTO;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
@@ -148,9 +149,9 @@ public class CustomerController {
 	
 	
 	@GetMapping("/feedback/{cid}")
-	public ResponseEntity<String> viewFeedbackByCustomerId(@PathVariable("cid") Integer customerId, @RequestParam("key") String key){
+	public ResponseEntity<FeedBackDTO> viewFeedbackByCustomerId(@PathVariable("cid") Integer customerId, @RequestParam("key") String key){
 		
-		return new ResponseEntity<String>(fService.findFeedbackByCustomerId(customerId, key), HttpStatus.FOUND);
+		return new ResponseEntity<FeedBackDTO>(fService.findFeedbackByCustomerId(customerId, key), HttpStatus.FOUND);
 	
 	}
 	

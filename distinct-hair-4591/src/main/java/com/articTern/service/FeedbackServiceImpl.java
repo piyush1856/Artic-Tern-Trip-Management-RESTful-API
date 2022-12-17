@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.articTern.dtoes.FeedBackDTO;
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.FeedbackException;
@@ -51,7 +52,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 			
 			opt.get().setFeedback(feedback);
 			feedback.setCustomer(opt.get());
-
+			//cRepo.save(feedback)
 			fRepo.save(feedback);
 			
 			return "Thank you for ginving your valuable feedback.";
@@ -65,7 +66,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 
 
 	@Override
-	public String findFeedbackByCustomerId(Integer customerId, String key) throws FeedbackException {
+	public FeedBackDTO findFeedbackByCustomerId(Integer customerId, String key) throws FeedbackException {
 		UserSession userSession = sRepo.findByUuid(key);
 		
 		
@@ -79,12 +80,18 @@ public class FeedbackServiceImpl implements FeedbackService{
 			
 			if(opt.get().getFeedback() != null) {
 				
-				Integer fId = opt.get().getFeedback().getFeedbackId();
-				Integer fRating = opt.get().getFeedback().getRating();
-				String feedback = opt.get().getFeedback().getFeedback();
-				LocalDate fDate = opt.get().getFeedback().getSubmitDate();
+				FeedBackDTO fdo = new FeedBackDTO();
 				
-				return "'Customer Id' : " + customerId+ "\n" + "'FeedbackId' : " +fId +"\n" + "'rating' : " + fRating + "\n" +"'feedBack Message' :  "+ feedback +"\n" + "'Submitted date' : " + fDate +"."; 
+				
+				fdo.setFid(opt.get().getFeedback().getFeedbackId()); 
+				fdo.setRating(opt.get().getFeedback().getRating()); 
+				fdo.setFeedback(opt.get().getFeedback().getFeedback()); 
+				fdo.setDate(opt.get().getFeedback().getSubmitDate());
+				fdo.setCid(opt.get().getUserId());
+				fdo.setCname(opt.get().getCustomerName());
+				fdo.setCphone(opt.get().getCustomerMobile());
+				
+				return fdo; 
 				
 			}else {
 				throw new FeedbackException("No Feedback Present with this customer ID.");
@@ -100,7 +107,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 
 
 	@Override
-	public String findFeedbackByfeedbackId(Integer feedbackId, String key) throws FeedbackException {
+	public FeedBackDTO findFeedbackByfeedbackId(Integer feedbackId, String key) throws FeedbackException {
 		UserSession userSession = sRepo.findByUuid(key);
 		
 		
@@ -114,17 +121,18 @@ public class FeedbackServiceImpl implements FeedbackService{
 			
 			if(opt.get().getFeedback() != null) {
 				
-				Integer fId = opt.get().getFeedbackId();
-				Integer fRating = opt.get().getRating();
-				String feedback = opt.get().getFeedback();
-				LocalDate fDate = opt.get().getSubmitDate();
+				FeedBackDTO fdo = new FeedBackDTO();
+				Customer c = opt.get().getCustomer();
 				
-				String customername = opt.get().getCustomer().getCustomerName();
-				Integer customerId =opt.get().getCustomer().getUserId();
-				String customerPhone = opt.get().getCustomer().getCustomerMobile();
+				fdo.setFid(opt.get().getFeedbackId()); 
+				fdo.setRating(opt.get().getRating()); 
+				fdo.setFeedback(opt.get().getFeedback()); 
+				fdo.setDate(opt.get().getSubmitDate());
+				fdo.setCid(c.getUserId());
+				fdo.setCname(c.getCustomerName());
+				fdo.setCphone(c.getCustomerMobile());
 				
-				return "'FeedbackId' : " +fId +"\n" + "'rating' : " + fRating + "\n" +"'feedBack Message' :  "+
-						feedback +"\n" + "'Submitted date' : " + fDate +"\n"+ "'customerId' :" + customerId +"\n"+ "'customeName' :" + customername +"\n"+ "'customerPhone' :" + customerPhone; 
+				return fdo;
 				
 			}else {
 				throw new FeedbackException("No Feedback Present with this feedback ID.");
@@ -140,7 +148,7 @@ public class FeedbackServiceImpl implements FeedbackService{
 
 
 	@Override
-	public List<String> viewAllfeedback(String key) throws FeedbackException {
+	public List<FeedBackDTO> viewAllfeedback(String key) throws FeedbackException {
 		
 		UserSession userSession = sRepo.findByUuid(key);
 		
@@ -155,23 +163,24 @@ public class FeedbackServiceImpl implements FeedbackService{
 			throw new FeedbackException("No feedback found.");
 		}
 		
-		List<String> feedbacks = new ArrayList<>();
+		List<FeedBackDTO> feedbacks = new ArrayList<>();
 		
 		for(Feedback f : feedbackList) {
 			
-			Integer fId = f.getFeedbackId();
-			Integer fRating = f.getRating();
-			String feedback = f.getFeedback();
-			LocalDate fDate = f.getSubmitDate();
+			FeedBackDTO fdo = new FeedBackDTO();
 			
-			String customername = f.getCustomer().getCustomerName();
-			Integer customerId =f.getCustomer().getUserId();
-			String customerPhone = f.getCustomer().getCustomerMobile();
+
+			fdo.setFid(f.getFeedbackId()); 
+			fdo.setRating(f.getRating()); 
+			fdo.setFeedback(f.getFeedback()); 
+			fdo.setDate(f.getSubmitDate());
 			
-			String fb= "'FeedbackId' : " +fId +", " + "'rating' : " + fRating + ", "  +"'feedBack Message' :  "+
-					feedback +", "  + "'Submitted date' : " + fDate +", " + "'customerId' :" + customerId +", " + "'customeName' :" + customername +", " + "'customerPhone' :" + customerPhone; 
+			fdo.setCid(f.getCustomer().getUserId());
+			fdo.setCname(f.getCustomer().getCustomerName());
+			fdo.setCphone(f.getCustomer().getCustomerMobile());
 			
-			feedbacks.add(fb);
+			
+			feedbacks.add(fdo);
 			
 		}
  		
