@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -65,6 +66,10 @@ public class Route {
 	@JsonIgnore
 	@OneToMany(mappedBy = "busRoute", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Bus> routeBusList = new ArrayList<>();
+	
+	
+	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REFRESH}, mappedBy = "routesInPackage")
+	private List<TripPackage> packagesInRoute = new ArrayList<>();
 	
 	
 	

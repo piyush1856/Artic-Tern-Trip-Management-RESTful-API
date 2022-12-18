@@ -20,4 +20,6 @@ public class PackageHotelDTO {
 	
 	private Set<Integer> hidSet;
 	
+	private Set<Integer> ridSet;
+	
 }

@@ -153,7 +153,7 @@ public class RouteServiceImpl implements RouteService{
 		List<Route> requiredList = new ArrayList<>();
 		
 		for(Route r:routelist) {
-			if(r.getRouteFrom().equals(src) && r.getRouteTo().equals(des)) {
+			if(r.getRouteFrom().equalsIgnoreCase(src) && r.getRouteTo().equalsIgnoreCase(des)) {
 				requiredList.add(r);
 			}
 		}

@@ -65,6 +65,10 @@ public class TripPackage {
 	@ManyToMany(mappedBy = "packageList", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Hotel> hotelList = new ArrayList<>();
 	
+	@JsonIgnore
+	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REFRESH})
+	private List<Route> routesInPackage = new ArrayList<>();
+	
 	
 	
 	

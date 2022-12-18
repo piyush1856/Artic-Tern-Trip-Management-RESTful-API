@@ -14,11 +14,14 @@ import com.articTern.enums.UserType;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.HotelException;
 import com.articTern.exceptions.PackageException;
+import com.articTern.exceptions.RouteException;
 import com.articTern.model.Hotel;
+import com.articTern.model.Route;
 import com.articTern.model.TripPackage;
 import com.articTern.model.UserSession;
 import com.articTern.repository.HotelRepo;
 import com.articTern.repository.PackageRepo;
+import com.articTern.repository.RouteRepo;
 import com.articTern.repository.SessionRepo;
 
 @Service
@@ -33,12 +36,16 @@ public class PackageServiceImpl implements PackageService {
 	@Autowired
 	private HotelRepo hRepo;
 	
+	@Autowired
+	private RouteRepo rRepo;
+	
 	
 	@Override
 	public TripPackage addPackage(PackageHotelDTO packageHotelDTO, String key) throws CredentialException {
 		
 		TripPackage mypackage = packageHotelDTO.getTripPackage();
 		Set<Integer> hidSet = packageHotelDTO.getHidSet();
+		Set<Integer> ridSet = packageHotelDTO.getRidSet();
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -50,11 +57,15 @@ public class PackageServiceImpl implements PackageService {
 			throw new HotelException("No hotel selected...");
 		}
 		
+		if(ridSet == null) {
+			throw new RouteException("No Route selected...");
+		}
+		
+		
+		
 		List<Integer> hidList = new ArrayList<>(hidSet);
 		List<Hotel> hotelList = new ArrayList<>();
-		
-		
-		
+			
 		for(int i = 0; i < hidList.size(); i++) {	
 			Optional<Hotel> op = hRepo.findById(hidList.get(i));
 			
@@ -72,10 +83,37 @@ public class PackageServiceImpl implements PackageService {
 			mypackage.getHotelList().add(hotelList.get(j));
 			hotelList.get(j).getPackageList().add(mypackage);
 			
-			hRepo.save(hotelList.get(j));
+//			hRepo.save(hotelList.get(j));
 			
 		}
 		
+		
+		
+		
+		List<Integer> ridList = new ArrayList<>(ridSet);		
+		List<Route> routeList = new ArrayList<>();
+		
+		for(int k = 0; k < ridList.size(); k++) {
+			
+			Optional<Route> opt =  rRepo.findById(ridList.get(k));
+			if(opt.isEmpty()) {
+				throw new RouteException("Invalid Route Id : " + ridList.get(k));
+			}
+			
+			routeList.add(opt.get());
+			
+		}
+		
+		for(int p = 0; p < routeList.size(); p++) {
+			
+			mypackage.getRoutesInPackage().add(routeList.get(p));
+			routeList.get(p).getPackagesInRoute().add(mypackage);
+			
+//			rRepo.save(routeList.get(p));
+			
+		}
+		
+				
 		return pRepo.save(mypackage);
 		
 	}
@@ -96,6 +134,8 @@ public class PackageServiceImpl implements PackageService {
 			throw new PackageException("Invalid package id");
 		}
 		
+		
+		
 		List<Hotel> hotelList = myPackage.get().getHotelList();
 		
 		for(Hotel hotel : hotelList) {
@@ -104,8 +144,18 @@ public class PackageServiceImpl implements PackageService {
 		}
 		
 		
+		
+		List<Route> routeList = myPackage.get().getRoutesInPackage();
+		
+		for(Route route : routeList) {
+			route.getPackagesInRoute().remove(myPackage.get());
+			rRepo.save(route);
+		}
+		
+		
 		//Need review
 		myPackage.get().getHotelList().clear();	
+		myPackage.get().getRoutesInPackage().clear();
 		pRepo.save(myPackage.get());
 		
 		
