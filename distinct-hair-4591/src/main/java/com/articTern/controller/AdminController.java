@@ -149,7 +149,7 @@ class AdminController {
 		return new ResponseEntity<TravelAgency>(tService.updateTravelAgencyMobile(ta, key), HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/update/travelagency/delete/{id}")
+	@DeleteMapping("/delete/travelagency/{id}")
 	public ResponseEntity<String> deleteTravelAgency(@PathVariable("id") Integer tId,@RequestParam("key") String key){
 
 		return new ResponseEntity<String>(tService.deleteTravelAgencyById(tId, key),HttpStatus.ACCEPTED);
@@ -169,9 +169,9 @@ class AdminController {
 	/*********************************************************************************************************************************************************************/
 	
 	
-	@PostMapping("/bus/add")
-	public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus b, @RequestParam("key") String key){		
-		return new ResponseEntity<Bus>(bService.addBus(b, key), HttpStatus.CREATED);		
+	@PostMapping("/bus/add/{tid}")
+	public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus b, @RequestParam("key") String key,@PathVariable("tid") Integer travelId){		
+		return new ResponseEntity<Bus>(bService.addBus(b, key,travelId), HttpStatus.CREATED);		
 	}
 	
 	@PutMapping("/update/bus/type")
@@ -180,7 +180,7 @@ class AdminController {
 		return new ResponseEntity<Bus>(bService.updateBusType(b, key), HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/update/bus/delete/{id}")
+	@DeleteMapping("/delete/bus/{id}")
 	public ResponseEntity<String> deleteBus(@PathVariable("id") Integer tId,@RequestParam("key") String key){
 
 		return new ResponseEntity<String>(bService.deleteBus(tId, key),HttpStatus.ACCEPTED);
@@ -197,7 +197,15 @@ class AdminController {
 		return new ResponseEntity<List<Bus>>(bService.getAllBus(key), HttpStatus.FOUND);		
 	}
 	
+	//can be used from both side
+	@PutMapping("/update/bus/tarvelagency/{bid}/{tid}")
+	public ResponseEntity<Bus> updateBusTravelsAgency(@PathVariable("bid") Integer bid,@PathVariable("tid") Integer tid,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Bus>(bService.assignBusToTravelAgency(bid, tid, key), HttpStatus.ACCEPTED);
+	}
 	
+	/*************************************************************************************---//Route\\---********************************************************************************/
+
 	
 	@PostMapping("/addhotel")
 	public ResponseEntity<Hotel> addHotelHandler(@Valid @RequestBody Hotel hotel, @RequestParam("key") String key) throws CredentialException{
@@ -221,6 +229,9 @@ class AdminController {
 		
 	}
 	
+	
+	
+	
 	/*************************************************************************************---//Route\\---********************************************************************************/
 	
 	@PostMapping("/route/add")
@@ -228,7 +239,7 @@ class AdminController {
 		return new ResponseEntity<Route>(rService.addRoute(r, key), HttpStatus.CREATED);		
 	}
 	
-	@DeleteMapping("/deleteroute/{rid}")
+	@DeleteMapping("/delete/route/{rid}")
 	public ResponseEntity<String> deleteRouteHandler(@PathVariable("rid") Integer rid, @RequestParam("key") String key){
 		
 		return new ResponseEntity<String>(rService.deleteRoute(rid, key), HttpStatus.OK);
@@ -253,6 +264,64 @@ class AdminController {
 		return new ResponseEntity<List<Route>>(rService.getAllRoute(key), HttpStatus.FOUND);
 		
 	}
+	
+	@PutMapping("/route/update/fare")
+	public ResponseEntity<Route> updateRouteFare(@RequestBody Route r,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Route>(rService.updateRouteFare(r, key), HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/route/update/arrival")
+	public ResponseEntity<Route> updateRouteArrival(@RequestBody Route r,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Route>(rService.updateRouteArrival(r, key), HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/route/update/departure")
+	public ResponseEntity<Route> updateRouteDeparture(@RequestBody Route r,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Route>(rService.updateRouteDeparture(r, key), HttpStatus.ACCEPTED);
+	}
+	
+	@PutMapping("/route/update/dateofjourney")
+	public ResponseEntity<Route> updateRouteDateOfJourney(@RequestBody Route r,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Route>(rService.updateRouteDateOfJourney(r, key), HttpStatus.ACCEPTED);
+	}
+	
+	
+	//can be used from both side
+	@PutMapping("/update/bus/route/{bid}/{rid}")
+	public ResponseEntity<Bus> updateBusRoute(@PathVariable("bid") Integer bid,@PathVariable("rid") Integer rid,@RequestParam("key") String key){
+		
+		return new ResponseEntity<Bus>(bService.assignBusToRoute(bid, rid, key), HttpStatus.ACCEPTED);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

@@ -59,7 +59,7 @@ public class TravelAgency {
 	private String travelMobile;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "travelAgency", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToMany(mappedBy = "travelAgency", cascade = /*{CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}*/ CascadeType.ALL)
 	private List<Bus> busList = new ArrayList<>();
 
 	
