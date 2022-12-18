@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.TravelAgencyException;
+import com.articTern.model.Bus;
 import com.articTern.model.Customer;
 import com.articTern.model.TravelAgency;
 import com.articTern.model.UserSession;
+import com.articTern.repository.BusRepo;
 import com.articTern.repository.CustomerRepo;
+import com.articTern.repository.RouteRepo;
 import com.articTern.repository.SessionRepo;
 import com.articTern.repository.TravelAgencyRepo;
 
@@ -27,6 +30,12 @@ public class TravelAgencyServiceImpl implements TravelAgencyService{
 	
 	@Autowired
 	private TravelAgencyRepo tRepo;
+	
+	@Autowired
+	private BusRepo bRepo;
+	
+	@Autowired
+	private RouteRepo rRepo;
 
 	@Override
 	public TravelAgency addtravelAgency(TravelAgency travelAgency, String key) throws TravelAgencyException {
@@ -141,6 +150,27 @@ public class TravelAgencyServiceImpl implements TravelAgencyService{
 		Optional<TravelAgency> opt =  tRepo.findById(travelId);
 		
 		if(opt.isPresent()) {
+			
+			List<Bus> bus = opt.get().getBusList();
+			
+			opt.get().getBusList().clear();
+			tRepo.save(opt.get());
+		
+			for(Bus b : bus) {
+				
+				b.setTravelAgency(null);
+				
+				b.getBusRoute().getRouteBusList().remove(b);
+				
+				b.setBusRoute(null);
+				
+				
+				bRepo.save(b);
+				bRepo.delete(b);
+			}
+			
+			
+			
 			tRepo.delete(opt.get());
 			
 			return " Travel Agency deleted successfully";

@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -45,9 +46,11 @@ public class Route {
 	@NotNull(message = "Departure time is Mandatory.")
 	private LocalTime departureTime;
 	
+	
 	@NotNull(message = "Arrival time is Mandatory.")
 	private LocalTime arrivalTime;
 	
+
 	@NotNull(message = "Date of Journey is Mandatory.")
 	private LocalDate dateOfJourney;
 	

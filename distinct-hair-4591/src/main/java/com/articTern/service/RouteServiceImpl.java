@@ -59,9 +59,22 @@ public class RouteServiceImpl implements RouteService{
 	}
 
 	@Override
-	public Route updateRoute(Route route, String key) throws RouteException {
-		// TODO Auto-generated method stub
-		return null;
+	public Route updateRouteFare(Route route, String key) throws RouteException {
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)){
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		Optional<Route> r = rRepo.findById(route.getRouteId());
+		
+		if(r.isEmpty()) {
+			throw new RouteException("Route not found");
+		}
+		
+		r.get().setFare(route.getFare());
+		
+		return rRepo.save(r.get());
 	}
 
 	@Override
@@ -76,6 +89,16 @@ public class RouteServiceImpl implements RouteService{
 		Optional<Route> opt = rRepo.findById(routeId);
 		
 		if(opt.isPresent()) {
+			
+			List<Bus> bus = opt.get().getRouteBusList();
+			
+			for(Bus b : bus) {
+				b.setBusRoute(null);
+			}
+			
+			opt.get().getRouteBusList().clear();
+			
+			rRepo.save(opt.get());
 			
 			rRepo.delete(opt.get());
 			
@@ -139,6 +162,63 @@ public class RouteServiceImpl implements RouteService{
 		}
 		
 		return requiredList;
+	}
+
+	@Override
+	public Route updateRouteArrival(Route route, String key) throws RouteException {
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)){
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		Optional<Route> r = rRepo.findById(route.getRouteId());
+		
+		if(r.isEmpty()) {
+			throw new RouteException("Route not found");
+		}
+		
+		r.get().setArrivalTime(route.getArrivalTime());;
+		
+		return rRepo.save(r.get());
+	}
+
+	@Override
+	public Route updateRouteDeparture(Route route, String key) throws RouteException {
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)){
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		Optional<Route> r = rRepo.findById(route.getRouteId());
+		
+		if(r.isEmpty()) {
+			throw new RouteException("Route not found");
+		}
+		
+		r.get().setDepartureTime(route.getDepartureTime());;
+		
+		return rRepo.save(r.get());
+	}
+
+	@Override
+	public Route updateRouteDateOfJourney(Route route, String key) throws RouteException {
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)){
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		Optional<Route> r = rRepo.findById(route.getRouteId());
+		
+		if(r.isEmpty()) {
+			throw new RouteException("Route not found");
+		}
+		
+		r.get().setDateOfJourney(route.getDateOfJourney());;
+		
+		return rRepo.save(r.get());
 	}
 
 }

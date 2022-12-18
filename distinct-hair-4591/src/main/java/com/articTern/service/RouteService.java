@@ -10,7 +10,13 @@ public interface RouteService {
 
 	public Route addRoute(Route route, String key) throws RouteException;
 	
-	public Route updateRoute(Route route, String key) throws RouteException;
+	public Route updateRouteFare(Route route, String key) throws RouteException;
+	
+	public Route updateRouteArrival(Route route, String key) throws RouteException;
+	
+	public Route updateRouteDeparture(Route route, String key) throws RouteException;
+	
+	public Route updateRouteDateOfJourney(Route route, String key) throws RouteException;
 	
 	public String deleteRoute(Integer routeId, String key) throws RouteException;
 	
