@@ -29,6 +29,7 @@ import com.articTern.service.BusService;
 import com.articTern.service.FeedbackService;
 
 import com.articTern.service.PackageService;
+import com.articTern.service.ReportService;
 import com.articTern.service.RouteService;
 import com.articTern.service.TravelAgencyService;
 
@@ -39,6 +40,7 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.HotelException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Hotel;
+import com.articTern.model.Report;
 import com.articTern.model.Route;
 import com.articTern.model.TripPackage;
 import com.articTern.service.HotelService;
@@ -66,6 +68,11 @@ class AdminController {
 	
 	@Autowired
 	private RouteService rService;
+	
+	@Autowired
+	private ReportService reportService;
+	
+	
 	
 	@PostMapping("/addpackage")
 	public ResponseEntity<TripPackage> addPackageHandler(@Valid @RequestBody PackageHotelDTO packageHotelDTO, @RequestParam("key") String key) throws CredentialException{		
@@ -299,13 +306,31 @@ class AdminController {
 	
 	
 	
+	/*************************************************************************************---//Route\\---********************************************************************************/
+
+	@PostMapping("/report/add")
+	public ResponseEntity<Report> addRoute(@Valid @RequestBody Report r, @RequestParam("key") String key){		
+		return new ResponseEntity<Report>(reportService.addReport(r, key), HttpStatus.CREATED);		
+	}
 	
+	@DeleteMapping("/report/delete/{rid}")
+	public ResponseEntity<String> deleteReportById(@PathVariable("rid") Integer rid, @RequestParam("key") String key){
+		
+		return new ResponseEntity<String>(reportService.deleteReport(rid, key), HttpStatus.OK);
+		
+	}
 	
+	@GetMapping("/report/search/{id}")
+	public ResponseEntity<Report> searchReportById(@PathVariable("id") Integer rId,@RequestParam("key") String key){		
+		return new ResponseEntity<Report>(reportService.searchById(rId, key), HttpStatus.FOUND);		
+	}
 	
-	
-	
-	
-	
+	@GetMapping("/report/viewall")
+	public ResponseEntity<List<Report>> getAllReportHandler(@RequestParam("key") String key){
+		
+		return new ResponseEntity<List<Report>>(reportService.viewAllReport(key), HttpStatus.FOUND);
+		
+	}
 	
 	
 	
