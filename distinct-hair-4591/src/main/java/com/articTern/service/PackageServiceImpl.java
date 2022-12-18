@@ -103,10 +103,9 @@ public class PackageServiceImpl implements PackageService {
 			hRepo.save(hotel);
 		}
 		
-		myPackage.get().getHotelList().clear();
 		
-		
-		
+		//Need review
+		myPackage.get().getHotelList().clear();	
 		pRepo.save(myPackage.get());
 		
 		

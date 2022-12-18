@@ -45,11 +45,7 @@ public class Customer extends User{
 	@Pattern(regexp = "[6789]{1}[0-9]{9}",message = "Invalid Mobile Number.")
 	private String customerMobile;
 	
-	@JsonIgnore
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "customer")
-	private TicketDetails ticketDetails;
 	
-
 	@JsonIgnore
 	@OneToMany(mappedBy = "customer", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Booking> bookingListInCustomer = new ArrayList<>();

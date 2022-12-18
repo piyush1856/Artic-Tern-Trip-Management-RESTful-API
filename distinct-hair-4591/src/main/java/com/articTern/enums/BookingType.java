@@ -2,12 +2,8 @@ package com.articTern.enums;
 
 public enum BookingType {
 	
-	MOUNTAIN("Mountain"),
-	CITY("City"),
-	DESERT("Desert"),
-	BEACH("Beach"),
-	CULTURAL("Cultural"),
-	WILDLIFE("Wildlife");
+	DIRECT("Direct"),
+	INDIRECT("Indirect");
 	
 	private String type;
 	 

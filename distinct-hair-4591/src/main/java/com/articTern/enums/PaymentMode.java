@@ -2,8 +2,7 @@ package com.articTern.enums;
 
 public enum PaymentMode {
 	
-	CASH("Cash"),
-	CHEQUE("Cheque"),
+	
 	CREDIT_CARD("Credit_Card"),
 	DEBIT_CARD("Debit_Card"),
 	BANK_TRANSFER("Bank_Transfer"),	

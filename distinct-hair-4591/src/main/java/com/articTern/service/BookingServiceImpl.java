@@ -7,12 +7,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.articTern.dtoes.TicketDetails;
+import com.articTern.enums.TicketStatus;
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.BookingException;
 import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
 import com.articTern.model.Customer;
+import com.articTern.model.PaymentDetails;
 import com.articTern.model.TripPackage;
 import com.articTern.model.UserSession;
 import com.articTern.repository.BookingRepo;
@@ -37,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
 	private CustomerRepo cRepo;
 	
 	@Override
-	public Booking makeBooking(Booking booking, Integer packageId, String key) throws CredentialException, PackageException {
+	public TicketDetails makeBooking(Booking booking, Integer packageId, String key) throws CredentialException, PackageException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -53,25 +56,37 @@ public class BookingServiceImpl implements BookingService {
 		
 //		Associating Booking and package
 		
-		booking.setPackageInBooking(myPackage.get());
-		
+		booking.setPackageInBooking(myPackage.get());		
 		myPackage.get().getBookingList().add(booking);
 		
 		
 		
 //		Associating customer and booking
 		
-		Customer customer = cRepo.findById(usersession.getUserId()).get();
-		
-		booking.setCustomer(customer);
-		
+		Customer customer = cRepo.findById(usersession.getUserId()).get();		
+		booking.setCustomer(customer);		
 		customer.getBookingListInCustomer().add(booking);
 		
-		return bRepo.save(booking);
+		Booking savedBookingDetails = bRepo.save(booking);
+		
+		TicketDetails tc = new TicketDetails();
+		
+		tc.setTicketId(savedBookingDetails.getBookingId());
+		tc.setBookingDateTime(savedBookingDetails.getBookingDateTime());
+		tc.setBookingType(savedBookingDetails.getBookingType());
+		tc.setCustomerEmail(savedBookingDetails.getCustomer().getCustomerEmail());
+		tc.setCustomerMobile(savedBookingDetails.getCustomer().getCustomerMobile());
+		tc.setCustomerName(savedBookingDetails.getCustomer().getCustomerName());
+		tc.setNoOfPerson(savedBookingDetails.getNoOfPerson());
+		tc.setStatus(TicketStatus.CONFIRMED);
+		tc.setPayment(savedBookingDetails.getPayment());
+		
+		return tc;
+		
 	}
 
 	@Override
-	public Booking cancelBooking(Integer bookingId, String key) throws BookingException, CredentialException {
+	public String cancelBooking(Integer bookingId, String key) throws BookingException, CredentialException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -85,11 +100,14 @@ public class BookingServiceImpl implements BookingService {
 			throw new BookingException("Invalid Booking ID");
 		}
 		
+		existingBooking.get().setPackageInBooking(null);
+		existingBooking.get().getPackageInBooking().getBookingList().remove(existingBooking.get());
 		
+		bRepo.save(existingBooking.get());
 		
 		bRepo.delete(existingBooking.get());
 		
-		return existingBooking.get();
+		return "Ticket with Booking Id :  "+bookingId +" has been cancelled successfully..";
 	}
 
 	@Override
