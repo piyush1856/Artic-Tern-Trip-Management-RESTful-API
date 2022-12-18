@@ -42,16 +42,16 @@ public class PackageServiceImpl implements PackageService {
 	
 	@Override
 	public TripPackage addPackage(PackageHotelDTO packageHotelDTO, String key) throws CredentialException {
-		
-		TripPackage mypackage = packageHotelDTO.getTripPackage();
-		Set<Integer> hidSet = packageHotelDTO.getHidSet();
-		Set<Integer> ridSet = packageHotelDTO.getRidSet();
-		
+				
 		UserSession usersession = sRepo.findByUuid(key);
 		
 		if(usersession == null || usersession.getUserType().equals(UserType.Customer)) {
 			throw new CredentialException("Kindly login as Admin");
 		}
+		
+		TripPackage mypackage = packageHotelDTO.getTripPackage();
+		Set<Integer> hidSet = packageHotelDTO.getHidSet();
+		Set<Integer> ridSet = packageHotelDTO.getRidSet();
 		
 		if(hidSet == null) {
 			throw new HotelException("No hotel selected...");
@@ -83,7 +83,6 @@ public class PackageServiceImpl implements PackageService {
 			mypackage.getHotelList().add(hotelList.get(j));
 			hotelList.get(j).getPackageList().add(mypackage);
 			
-//			hRepo.save(hotelList.get(j));
 			
 		}
 		
@@ -108,8 +107,6 @@ public class PackageServiceImpl implements PackageService {
 			
 			mypackage.getRoutesInPackage().add(routeList.get(p));
 			routeList.get(p).getPackagesInRoute().add(mypackage);
-			
-//			rRepo.save(routeList.get(p));
 			
 		}
 		
