@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import com.articTern.enums.BookingType;
+import com.articTern.enums.PackageType;
 import com.articTern.enums.TicketStatus;
 import com.articTern.model.PaymentDetails;
 
@@ -18,6 +19,10 @@ import lombok.NoArgsConstructor;
 public class TicketDetails {
 	
 	private Integer ticketId;
+	
+	private String packageName;
+	
+	private PackageType pacakageType;
 	
     @Enumerated(EnumType.STRING)
 	private TicketStatus status;

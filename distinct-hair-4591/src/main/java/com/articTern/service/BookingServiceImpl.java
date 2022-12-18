@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.articTern.dtoes.TicketDetails;
+import com.articTern.enums.BookingType;
 import com.articTern.enums.TicketStatus;
 import com.articTern.enums.UserType;
 import com.articTern.exceptions.BookingException;
 import com.articTern.exceptions.CredentialException;
+import com.articTern.exceptions.CustomerException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
 import com.articTern.model.Customer;
@@ -80,11 +82,14 @@ public class BookingServiceImpl implements BookingService {
 		tc.setNoOfPerson(savedBookingDetails.getNoOfPerson());
 		tc.setStatus(TicketStatus.CONFIRMED);
 		tc.setPayment(savedBookingDetails.getPayment());
+		tc.setPackageName(savedBookingDetails.getPackageInBooking().getPackageName());
+		tc.setPacakageType(savedBookingDetails.getPackageInBooking().getPackageType());
 		
 		return tc;
 		
 	}
 
+	
 	@Override
 	public String cancelBooking(Integer bookingId, String key) throws BookingException, CredentialException {
 		
@@ -100,8 +105,9 @@ public class BookingServiceImpl implements BookingService {
 			throw new BookingException("Invalid Booking ID");
 		}
 		
-		existingBooking.get().setPackageInBooking(null);
 		existingBooking.get().getPackageInBooking().getBookingList().remove(existingBooking.get());
+		existingBooking.get().setPackageInBooking(null);
+		
 		
 		bRepo.save(existingBooking.get());
 		
@@ -110,8 +116,9 @@ public class BookingServiceImpl implements BookingService {
 		return "Ticket with Booking Id :  "+bookingId +" has been cancelled successfully..";
 	}
 
+	
 	@Override
-	public Booking viewBooking(Integer bookingId, String key) throws BookingException, CredentialException {
+	public TicketDetails viewBookingByBookingIdForCustomer(Integer bookingId, String key) throws BookingException, CredentialException {
 		
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -125,12 +132,124 @@ public class BookingServiceImpl implements BookingService {
 			throw new BookingException("Invalid Booking ID");
 		}
 		
+		Integer customerId = usersession.getUserId();
 		
-		return existingBooking.get();
+		if(customerId != existingBooking.get().getCustomer().getUserId()) {
+			throw new BookingException("Invalid Booking ID");
+		}
+		
+		Booking savedBookingDetails = existingBooking.get();
+		
+		
+		TicketDetails tc = new TicketDetails();
+		
+		tc.setTicketId(savedBookingDetails.getBookingId());
+		tc.setBookingDateTime(savedBookingDetails.getBookingDateTime());
+		tc.setBookingType(savedBookingDetails.getBookingType());
+		tc.setCustomerEmail(savedBookingDetails.getCustomer().getCustomerEmail());
+		tc.setCustomerMobile(savedBookingDetails.getCustomer().getCustomerMobile());
+		tc.setCustomerName(savedBookingDetails.getCustomer().getCustomerName());
+		tc.setNoOfPerson(savedBookingDetails.getNoOfPerson());
+		tc.setStatus(TicketStatus.CONFIRMED);
+		tc.setPayment(savedBookingDetails.getPayment());
+		tc.setPackageName(savedBookingDetails.getPackageInBooking().getPackageName());
+		tc.setPacakageType(savedBookingDetails.getPackageInBooking().getPackageType());
+		
+		return tc;
 		
 		
 	}
+	
+	
+	@Override
+	public TicketDetails viewBookingByBookingIdForAdmin(Integer bookingId, String key) throws BookingException, CredentialException {
+		
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)) {
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		Optional<Booking> existingBooking = bRepo.findById(bookingId);
+		
+		if(existingBooking.isEmpty()) {
+			throw new BookingException("Invalid Booking ID");
+		}
+		
+		Booking savedBookingDetails = existingBooking.get();
+		
+		
+		TicketDetails tc = new TicketDetails();
+		
+		tc.setTicketId(savedBookingDetails.getBookingId());
+		tc.setBookingDateTime(savedBookingDetails.getBookingDateTime());
+		tc.setBookingType(savedBookingDetails.getBookingType());
+		tc.setCustomerEmail(savedBookingDetails.getCustomer().getCustomerEmail());
+		tc.setCustomerMobile(savedBookingDetails.getCustomer().getCustomerMobile());
+		tc.setCustomerName(savedBookingDetails.getCustomer().getCustomerName());
+		tc.setNoOfPerson(savedBookingDetails.getNoOfPerson());
+		tc.setStatus(TicketStatus.CONFIRMED);
+		tc.setPayment(savedBookingDetails.getPayment());
+		tc.setPackageName(savedBookingDetails.getPackageInBooking().getPackageName());
+		tc.setPacakageType(savedBookingDetails.getPackageInBooking().getPackageType());
+		
+		
+		return tc;
+		
+		
+	}
+	
 
+	@Override
+	public List<TicketDetails> viewBookingByCustomerIdForAdmin(Integer customerId, String key)
+			throws BookingException, CredentialException, CustomerException {
+		
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)) {
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		Optional<Customer> existingCustomer = cRepo.findById(customerId);
+		
+		
+		if(existingCustomer.isEmpty()) {
+			throw new CustomerException("Invalid customer id");
+		}
+		
+		List<Booking> bookings = existingCustomer.get().getBookingListInCustomer();
+		
+		if(bookings.isEmpty()) {
+			throw new BookingException("No booking found for the customer with Customer Id : " + customerId);
+		}
+		
+		List<TicketDetails> allTicketDetails = new ArrayList<>();
+		
+		for(Booking  b : bookings) {
+			
+			TicketDetails tc = new TicketDetails();
+			
+			tc.setTicketId(b.getBookingId());
+			tc.setBookingDateTime(b.getBookingDateTime());
+			tc.setBookingType(b.getBookingType());
+			tc.setCustomerEmail(b.getCustomer().getCustomerEmail());
+			tc.setCustomerMobile(b.getCustomer().getCustomerMobile());
+			tc.setCustomerName(b.getCustomer().getCustomerName());
+			tc.setNoOfPerson(b.getNoOfPerson());
+			tc.setStatus(TicketStatus.CONFIRMED);
+			tc.setPayment(b.getPayment());
+			tc.setPackageName(b.getPackageInBooking().getPackageName());
+			tc.setPacakageType(b.getPackageInBooking().getPackageType());
+			
+			allTicketDetails.add(tc);
+			
+		}
+		
+		
+		return allTicketDetails;
+	}
+	
+	
 	@Override
 	public List<Booking> viewAllBookingForCustomer(String key) throws BookingException, CredentialException {
 		
@@ -163,10 +282,9 @@ public class BookingServiceImpl implements BookingService {
 		return bookingListForCustomer;
 	}
 
+	
 	@Override
-	public List<Booking> viewAllBookingForAdmin(String key) throws BookingException, CredentialException {
-		
-		
+	public List<Booking> viewAllBookingForAdmin(String key) throws BookingException, CredentialException {	
 
 		UserSession usersession = sRepo.findByUuid(key);
 		
@@ -185,6 +303,44 @@ public class BookingServiceImpl implements BookingService {
 		
 		
 	}
+	
+	
+	@Override
+	public List<Booking> viewBookingByBookingTypeForAdmin(BookingType bookingType, String key) throws BookingException, CredentialException {
+		
+		UserSession usersession = sRepo.findByUuid(key);
+		
+		if(usersession == null || usersession.getUserType().equals(UserType.Customer)) {
+			throw new CredentialException("Kindly login as Admin");
+		}
+		
+		
+		List<Booking> allBookingDetails = bRepo.findAll();
+		
+		if(allBookingDetails.isEmpty()) {
+			throw new BookingException("No booking found with this booking type");
+		}
+		
+		List<Booking> allBookingDetailsByType = new ArrayList<>();
+		
+		for(Booking booking : allBookingDetails) {
+			
+			if(booking.getBookingType().equals(bookingType)) {
+				allBookingDetailsByType.add(booking);
+			}
+			
+		}
+		
+		if(allBookingDetailsByType.isEmpty()) {
+			throw new BookingException("No booking found with this booking type");
+		}	
+		
+		return allBookingDetailsByType;
+	}
+
+	
+	
+	
 	
 	
 	

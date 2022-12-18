@@ -10,10 +10,12 @@ import com.articTern.enums.CountryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Address {
 	
 	private String city;
@@ -22,9 +24,6 @@ public class Address {
 	
 	@Enumerated(EnumType.STRING)
 	private CountryEnum country;
-	
-	
-	
 	
 	
 

@@ -144,8 +144,8 @@ public class CustomerController {
 	
 	
 	@GetMapping("/bookings/{bid}")
-	public ResponseEntity<Booking> viewBookingHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws CredentialException, PackageException{
-		return new ResponseEntity<Booking>(bService.viewBooking(bookingId, key), HttpStatus.FOUND);
+	public ResponseEntity<TicketDetails> viewBookingByBookingIdForCustomerHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws CredentialException, PackageException{
+		return new ResponseEntity<TicketDetails>(bService.viewBookingByBookingIdForCustomer(bookingId, key), HttpStatus.FOUND);
 	}
 	
 	

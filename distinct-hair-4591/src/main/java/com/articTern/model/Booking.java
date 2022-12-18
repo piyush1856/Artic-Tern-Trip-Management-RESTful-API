@@ -61,7 +61,6 @@ public class Booking {
 	private Customer customer;
 	
 	
-	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)	
 	private PaymentDetails payment;
 	

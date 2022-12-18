@@ -20,11 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.articTern.dtoes.FeedBackDTO;
+import com.articTern.enums.BookingType;
 import com.articTern.enums.PackageType;
+import com.articTern.model.Booking;
 import com.articTern.model.Bus;
 import com.articTern.model.Customer;
 import com.articTern.model.TravelAgency;
 import com.articTern.model.TripPackage;
+import com.articTern.service.BookingService;
 import com.articTern.service.BusService;
 import com.articTern.service.FeedbackService;
 
@@ -34,8 +37,11 @@ import com.articTern.service.TravelAgencyService;
 
 
 import com.articTern.dtoes.PackageHotelDTO;
+import com.articTern.dtoes.TicketDetails;
 import com.articTern.enums.PackageType;
+import com.articTern.exceptions.BookingException;
 import com.articTern.exceptions.CredentialException;
+import com.articTern.exceptions.CustomerException;
 import com.articTern.exceptions.HotelException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Hotel;
@@ -66,6 +72,9 @@ class AdminController {
 	
 	@Autowired
 	private RouteService rService;
+	
+	@Autowired
+	private BookingService bookingService;
 	
 	@PostMapping("/addpackage")
 	public ResponseEntity<TripPackage> addPackageHandler(@Valid @RequestBody PackageHotelDTO packageHotelDTO, @RequestParam("key") String key) throws CredentialException{		
@@ -253,6 +262,36 @@ class AdminController {
 		return new ResponseEntity<List<Route>>(rService.getAllRoute(key), HttpStatus.FOUND);
 		
 	}
+	
+	
+	
+	@GetMapping("/bookings/bookingid/{bid}")
+	public ResponseEntity<TicketDetails> viewBookingByBookingIdForAdminHandler(@PathVariable("bid") Integer bookingId, @RequestParam("key") String key) throws BookingException, CredentialException {
+		
+		return new ResponseEntity<TicketDetails>(bookingService.viewBookingByBookingIdForAdmin(bookingId, key), HttpStatus.FOUND);
+	}
+	
+	
+	@GetMapping("/bookings/customerid/{cid}")
+	public ResponseEntity<List<TicketDetails>> viewBookingByCustomerIdForAdminHandler(@PathVariable("cid") Integer customerId, @RequestParam("key") String key) throws BookingException, CredentialException, CustomerException {
+		
+		return new ResponseEntity<List<TicketDetails>>(bookingService.viewBookingByCustomerIdForAdmin(customerId, key), HttpStatus.FOUND);
+	}
+	
+	
+	@GetMapping("/bookings")
+	public ResponseEntity<List<Booking>> viewAllBookingForAdminHandler(@RequestParam("key") String key) throws BookingException, CredentialException {
+		
+		return new ResponseEntity<List<Booking>>(bookingService.viewAllBookingForAdmin(key), HttpStatus.FOUND);
+	}
+	
+	@GetMapping("/bookings/bytype")
+	public ResponseEntity<List<Booking>> viewBookingByBookingTypeForAdmin(@RequestParam("btype") BookingType bookingType, @RequestParam("key") String key) throws BookingException, CredentialException {
+		
+		return new ResponseEntity<List<Booking>>(bookingService.viewBookingByBookingTypeForAdmin(bookingType, key), HttpStatus.FOUND);
+	}
+	
+	
 	
 	
 }

@@ -41,7 +41,7 @@ public class TripPackage {
 	@NotNull(message = "Package Name Can't be null.")
 	@NotBlank(message = "Package Name Can't be Blank.")
 	@NotEmpty (message = "Package Name Can't be Empty.")
-	@Column(unique = false)
+	@Column(unique = true)
 	private String packageName;
 	
 	@NotNull(message = "Package Description Can't be null.")

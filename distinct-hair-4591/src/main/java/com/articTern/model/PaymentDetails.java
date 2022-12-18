@@ -34,10 +34,6 @@ public class PaymentDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer paymentId;
 	
-//	private LocalDate paymentDate;
-//	
-//	private LocalTime paymentTime;
-	
 	@NotNull(message = "Payment Mode  Can't be null.")
 	@Enumerated(EnumType.STRING)
 	private PaymentMode paymentMode;
