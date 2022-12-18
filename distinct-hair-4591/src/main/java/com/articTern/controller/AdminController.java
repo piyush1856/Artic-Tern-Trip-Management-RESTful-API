@@ -29,6 +29,7 @@ import com.articTern.service.BusService;
 import com.articTern.service.FeedbackService;
 
 import com.articTern.service.PackageService;
+import com.articTern.service.RouteService;
 import com.articTern.service.TravelAgencyService;
 
 
@@ -38,6 +39,7 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.HotelException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Hotel;
+import com.articTern.model.Route;
 import com.articTern.model.TripPackage;
 import com.articTern.service.HotelService;
 
@@ -58,8 +60,12 @@ class AdminController {
 	
 	@Autowired
 	private BusService bService;
+	
 	@Autowired
 	private HotelService hService;
+	
+	@Autowired
+	private RouteService rService;
 	
 	@PostMapping("/addpackage")
 	public ResponseEntity<TripPackage> addPackageHandler(@Valid @RequestBody PackageHotelDTO packageHotelDTO, @RequestParam("key") String key) throws CredentialException{		
@@ -215,6 +221,38 @@ class AdminController {
 		
 	}
 	
+	/*************************************************************************************---//Route\\---********************************************************************************/
+	
+	@PostMapping("/route/add")
+	public ResponseEntity<Route> addRoute(@Valid @RequestBody Route r, @RequestParam("key") String key){		
+		return new ResponseEntity<Route>(rService.addRoute(r, key), HttpStatus.CREATED);		
+	}
+	
+	@DeleteMapping("/deleteroute/{rid}")
+	public ResponseEntity<String> deleteRouteHandler(@PathVariable("rid") Integer rid, @RequestParam("key") String key){
+		
+		return new ResponseEntity<String>(rService.deleteRoute(rid, key), HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/search/route/{id}")
+	public ResponseEntity<Route> searchRouteById(@PathVariable("id") Integer bId,@RequestParam("key") String key){		
+		return new ResponseEntity<Route>(rService.getRouteById(bId, key), HttpStatus.FOUND);		
+	}
+	
+	@GetMapping("/viewroutes/{src}/{des}")
+	public ResponseEntity<List<Route>> getAllHotelHandler(@PathVariable("src") String src,@PathVariable("des") String des,@RequestParam("key") String key){
+		
+		return new ResponseEntity<List<Route>>(rService.getRouteBySourceAndDestination(src, des, key), HttpStatus.FOUND);
+		
+	}
+	
+	@GetMapping("/viewallroutes")
+	public ResponseEntity<List<Route>> getAllRouteHandler(@RequestParam("key") String key){
+		
+		return new ResponseEntity<List<Route>>(rService.getAllRoute(key), HttpStatus.FOUND);
+		
+	}
 	
 	
 }

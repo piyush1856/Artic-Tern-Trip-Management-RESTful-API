@@ -23,6 +23,7 @@ import com.articTern.dtoes.FeedBackDTO;
 import com.articTern.dtoes.TicketDetails;
 import com.articTern.enums.PackageType;
 import com.articTern.exceptions.CredentialException;
+import com.articTern.exceptions.HotelException;
 import com.articTern.exceptions.PackageException;
 import com.articTern.model.Booking;
 import com.articTern.model.Bus;
@@ -30,11 +31,18 @@ import com.articTern.model.Customer;
  
 import com.articTern.model.Feedback;
 import com.articTern.model.TripPackage;
+
+import com.articTern.model.Route;
+
 import com.articTern.service.BookingService;
 import com.articTern.service.BusService;
 import com.articTern.service.CustomerService;
 import com.articTern.service.FeedbackService;
+
+
 import com.articTern.service.PackageService;
+import com.articTern.service.RouteService;
+
 
 @RestController
 @RequestMapping("/customer")
@@ -58,6 +66,8 @@ public class CustomerController {
 	private PackageService pService;
 	
  
+	@Autowired
+	private RouteService rService;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<Customer> signUpCustomer(@Valid @RequestBody Customer customer){
@@ -183,6 +193,7 @@ public class CustomerController {
 	}
 	
 	
+	/***********************************************************************************/
 	
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
 	
@@ -206,9 +217,25 @@ public class CustomerController {
 	
 	
 	
+	@GetMapping("/search/route/{id}")
+	public ResponseEntity<Route> searchRouteById(@PathVariable("id") Integer bId,@RequestParam("key") String key){		
+		return new ResponseEntity<Route>(rService.getRouteById(bId, key), HttpStatus.FOUND);		
+	}
 	
 	
+	@GetMapping("/viewroute/{src}/{des}")
+	public ResponseEntity<List<Route>> getAllHotelHandler(@PathVariable("src") String src,@PathVariable("des") String des,@RequestParam("key") String key){
+		
+		return new ResponseEntity<List<Route>>(rService.getRouteBySourceAndDestination(src, des, key), HttpStatus.FOUND);
+		
+	}
 	
+	@GetMapping("/viewallroutes")
+	public ResponseEntity<List<Route>> getAllRouteHandler(@RequestParam("key") String key){
+		
+		return new ResponseEntity<List<Route>>(rService.getAllRoute(key), HttpStatus.FOUND);
+		
+	}
 	
 	
 	
