@@ -11,6 +11,7 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.TravelAgencyException;
 import com.articTern.model.Bus;
 import com.articTern.model.Customer;
+import com.articTern.model.Route;
 import com.articTern.model.TravelAgency;
 import com.articTern.model.UserSession;
 import com.articTern.repository.BusRepo;
@@ -147,36 +148,66 @@ public class TravelAgencyServiceImpl implements TravelAgencyService{
 			throw new CredentialException("Kindly login as Admin");
 		}
 		
-		Optional<TravelAgency> opt =  tRepo.findById(travelId);
 		
-		if(opt.isPresent()) {
-			
-			List<Bus> bus = opt.get().getBusList();
-			
-			opt.get().getBusList().clear();
-			tRepo.save(opt.get());
+		Optional<TravelAgency> opt = tRepo.findById(travelId);
 		
-			for(Bus b : bus) {
-				
-				b.setTravelAgency(null);
-				
-				b.getBusRoute().getRouteBusList().remove(b);
-				
-				b.setBusRoute(null);
-				
-				
-				bRepo.save(b);
-				bRepo.delete(b);
-			}
-			
-			
-			
-			tRepo.delete(opt.get());
-			
-			return " Travel Agency deleted successfully";
-		}else {
-			throw new TravelAgencyException("Travel Agency not found with this ID.");
+		if(opt.isEmpty()) {
+			throw new TravelAgencyException("Invalid travel id");
 		}
+		
+		TravelAgency travelAgency = opt.get();
+		
+		List<Bus> busList = travelAgency.getBusList();
+		
+		if(! busList.isEmpty()) {
+			
+			for(Bus b : busList) {
+				
+				Route route = b.getBusRoute();
+				if(route != null) {
+					route.getRouteBusList().remove(b);
+					b.setBusRoute(null);
+				}
+				
+			}
+		}
+		
+		tRepo.delete(travelAgency);
+		
+		return " Travel Agency deleted successfully...";
+		
+		
+//		Optional<TravelAgency> opt =  tRepo.findById(travelId);
+//		
+//		if(opt.isPresent()) {
+//			
+//			List<Bus> bus = opt.get().getBusList();
+//			
+//			opt.get().getBusList().clear();
+//			tRepo.save(opt.get());
+//		
+//			for(Bus b : bus) {
+//				
+//				b.setTravelAgency(null);
+//				
+//				b.getBusRoute().getRouteBusList().remove(b);
+//				
+//				b.setBusRoute(null);
+//				
+//				
+//				bRepo.save(b);
+//				bRepo.delete(b);
+//			}
+//			
+//			
+//			
+//			tRepo.delete(opt.get());
+//			
+//			return " Travel Agency deleted successfully";
+//		}else {
+//			throw new TravelAgencyException("Travel Agency not found with this ID.");
+//		}
+		
 	}
 
 	@Override
