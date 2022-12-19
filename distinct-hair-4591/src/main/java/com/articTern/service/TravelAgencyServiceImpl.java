@@ -149,55 +149,11 @@ public class TravelAgencyServiceImpl implements TravelAgencyService{
 		}
 		
 		
-<<<<<<< HEAD
-		if(opt.isPresent()) {
-			
-			List<Bus> buslist = opt.get().getBusList();
-			
-			
-		
-			if(buslist.size()!=0) {
-				
-				
-				for(Bus b : buslist) {
-					
-					b.setTravelAgency(null);
-					
-					
-					if(b.getBusRoute() !=null) {
-						b.getBusRoute().getRouteBusList().remove(b);
-					}
-					
-					
-					bRepo.save(b);
-					
-					
-					
-					bRepo.save(b);
-					
-					bRepo.delete(b);
-					
-					
-				}
-				
-				opt.get().getBusList().clear();
-				
-			}
-		
-			
-			tRepo.save(opt.get());
-			
-			tRepo.delete(opt.get());
-			
-			return " Travel Agency deleted successfully";
-		}else {
-			throw new TravelAgencyException("Travel Agency not found with this ID.");
-=======
+
 		Optional<TravelAgency> opt = tRepo.findById(travelId);
 		
 		if(opt.isEmpty()) {
 			throw new TravelAgencyException("Invalid travel id");
->>>>>>> 88b0dac6eb7608f460e098e7db931a13c46776d4
 		}
 		
 		TravelAgency travelAgency = opt.get();
@@ -219,39 +175,9 @@ public class TravelAgencyServiceImpl implements TravelAgencyService{
 		
 		tRepo.delete(travelAgency);
 		
-		return " Travel Agency deleted successfully...";
+		return " Travel Agency deleted successfully...";		
 		
-		
-//		Optional<TravelAgency> opt =  tRepo.findById(travelId);
-//		
-//		if(opt.isPresent()) {
-//			
-//			List<Bus> bus = opt.get().getBusList();
-//			
-//			opt.get().getBusList().clear();
-//			tRepo.save(opt.get());
-//		
-//			for(Bus b : bus) {
-//				
-//				b.setTravelAgency(null);
-//				
-//				b.getBusRoute().getRouteBusList().remove(b);
-//				
-//				b.setBusRoute(null);
-//				
-//				
-//				bRepo.save(b);
-//				bRepo.delete(b);
-//			}
-//			
-//			
-//			
-//			tRepo.delete(opt.get());
-//			
-//			return " Travel Agency deleted successfully";
-//		}else {
-//			throw new TravelAgencyException("Travel Agency not found with this ID.");
-//		}
+
 		
 	}
 
