@@ -1,7 +1,7 @@
 # distinct-hair-4591
 
 <p align="center">
-  <img width="360" height="400" src="https://github.com/piyush1856/cheerful-notebook-6741/blob/main/assets/manrega%20(2).jpg?raw=true">
+  <img width="360" height="400" src="https://user-images.githubusercontent.com/103634964/208469028-1faa67b8-598f-4031-a3b3-7dff8894f8de.jpg">
 </p>
 
 > We have developed this REST API for an Online Trip Management System. This API performs all the fundamental CRUD operations of any Trip Management Application platform with user validation at every step.
@@ -10,9 +10,10 @@
 >
 >There are two users of this system : 
 > 
-> a. BDO (Block Development Officer) 
+> a. Admin
 >
-> b. Gram Panchayat member
+
+> b. Customer
 >
 > It is Restfull API Project.
 >
@@ -21,7 +22,8 @@
 
 # Features 
 
-- Login into the Application
+
+
 - User Management
 - Tours/Travels Package Management
 - Route and Bus Management
@@ -62,7 +64,7 @@
 ## **ER Diagram**
 
 <p align="center">
-  <img width="800" height="500" src="https://github.com/piyush1856/cheerful-notebook-6741/blob/main/assets/Database%20ER%20diagram%20MGNREGA.jpeg?raw=true">
+  <img width="1000" height="450" src="https://user-images.githubusercontent.com/103634964/208469251-00547311-8f93-4c10-8c79-67cde795d5f2.png">
 </p>
 
 
