@@ -11,6 +11,7 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.TravelAgencyException;
 import com.articTern.model.Bus;
 import com.articTern.model.Customer;
+import com.articTern.model.Route;
 import com.articTern.model.TravelAgency;
 import com.articTern.model.UserSession;
 import com.articTern.repository.BusRepo;
@@ -151,25 +152,40 @@ public class TravelAgencyServiceImpl implements TravelAgencyService{
 		
 		if(opt.isPresent()) {
 			
-			List<Bus> bus = opt.get().getBusList();
+			List<Bus> buslist = opt.get().getBusList();
 			
-			opt.get().getBusList().clear();
-			tRepo.save(opt.get());
+			
 		
-			for(Bus b : bus) {
-				
-				b.setTravelAgency(null);
-				
-				b.getBusRoute().getRouteBusList().remove(b);
-				
-				b.setBusRoute(null);
+			if(buslist.size()!=0) {
 				
 				
-				bRepo.save(b);
-				bRepo.delete(b);
+				for(Bus b : buslist) {
+					
+					b.setTravelAgency(null);
+					
+					
+					if(b.getBusRoute() !=null) {
+						b.getBusRoute().getRouteBusList().remove(b);
+					}
+					
+					
+					bRepo.save(b);
+					
+					
+					
+					bRepo.save(b);
+					
+					bRepo.delete(b);
+					
+					
+				}
+				
+				opt.get().getBusList().clear();
+				
 			}
+		
 			
-			
+			tRepo.save(opt.get());
 			
 			tRepo.delete(opt.get());
 			

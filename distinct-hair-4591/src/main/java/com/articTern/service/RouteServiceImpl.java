@@ -13,9 +13,11 @@ import com.articTern.exceptions.CredentialException;
 import com.articTern.exceptions.RouteException;
 import com.articTern.model.Bus;
 import com.articTern.model.Route;
+import com.articTern.model.TripPackage;
 import com.articTern.model.UserSession;
 import com.articTern.repository.BusRepo;
 import com.articTern.repository.CustomerRepo;
+import com.articTern.repository.PackageRepo;
 import com.articTern.repository.RouteRepo;
 import com.articTern.repository.SessionRepo;
 import com.articTern.repository.TravelAgencyRepo;
@@ -37,6 +39,9 @@ public class RouteServiceImpl implements RouteService{
 	
 	@Autowired
 	private RouteRepo rRepo;
+	
+	@Autowired
+	private PackageRepo pRepo;
 	
 
 	@Override
@@ -97,6 +102,24 @@ public class RouteServiceImpl implements RouteService{
 			}
 			
 			opt.get().getRouteBusList().clear();
+			
+			
+			List<TripPackage> packagelist = opt.get().getPackagesInRoute();
+			
+			if(packagelist.size() !=0) {
+				
+				for(TripPackage t : packagelist){
+					
+					List<Route> rlist = t.getRoutesInPackage();
+					
+					rlist.remove(opt.get());
+					
+				}
+				
+			}
+			
+			opt.get().getPackagesInRoute().clear();
+		   
 			
 			rRepo.save(opt.get());
 			
