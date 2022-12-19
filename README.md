@@ -45,6 +45,7 @@
 - Java
 - MySQL
 - Git & GitHub
+- Maven
 - Spring Boot
 - Hibernate
 - JPA
